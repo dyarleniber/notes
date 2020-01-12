@@ -11,7 +11,7 @@ My personal notes and files
 - [Docker](notes/Docker.md)
 - [English](notes/English.md)
 - [Freelancer and Remote work](notes/FreelancerAndRemotework.md)
-- [Interviwes](notes/Interviwes.md)
+- [Interview](notes/Interview.md)
 - [Linux](notes/Linux.md)
 - [PHP](notes/PHP.md)
 - [SQL](notes/SQL.md)
