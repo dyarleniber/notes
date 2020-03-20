@@ -1,5 +1,23 @@
 # Docker
 
+## What is a Container?
+
+A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another.
+
+A Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings.
+
+## Docker Compose
+
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services. Then, with a single command, you create and start all the services from your configuration.
+
+Using Compose is basically a three-step process:
+
+- Define your app’s environment with a Dockerfile so it can be reproduced anywhere.
+
+- Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment.
+
+- Run docker-compose up and Compose starts and runs your entire app.
+
 ## Commands
 
 ```shell
@@ -37,3 +55,33 @@ docker-compose exec db bash
 ```
 
 It executes an interactive bash shell on the db container.
+
+```shell
+docker rm <container ID> -f
+```
+
+Remove one or more containers. The -f option is used to force the removal of a running container.
+
+```shell
+docker rm $(docker ps -a -q)
+```
+
+This command will delete all stopped containers. The command docker ps -a -q will return all existing container IDs and pass them to the rm command which will delete them. Any running containers will not be deleted.
+
+```shell
+docker rmi <image ID> -f
+```
+
+Remove one or more images. The -f option is used to force the removal of the image.
+
+```shell
+docker rmi $(docker images -q) -f
+```
+
+This command will delete all images.
+
+## Dockerfile
+
+Docker can build images automatically by reading the instructions from a Dockerfile.
+
+A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image.
