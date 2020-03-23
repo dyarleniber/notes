@@ -117,11 +117,81 @@ Well the first thing you want to do is to load styles that is CSS files as soon 
 So if you put javascript in the head tag in HTML, the problem with that positioning if it's at the top is that it blocks page rendering scripts historically blocked additional resources from being downloaded more quickly.
 By replacing them at the bottom or by placing them at the bottom (After end body tag) you're style content and media could start downloading more quickly given the perception of improved performance.
 
-> Load style tag in the <head>
-> Load script right before </body>
+> Load style tag in the head tag
+> Load script right before closing the body tag
 
 - Step2 (CSS):
 
 CSS is called render blocking because in order to construct the rendered tree and print something onto the screen we're waiting for the CSS DOM to complete and combine it with the Dom to create the render tree, so CSS is rendered blocking.
 
 Internal ou inline styleshees are more faster than external css files
+
+
+
+
+<script type="text/javascript">
+	const loadStyleSheet = src => {
+		if (document.createStylesheet) {
+			document.createStylesheet(src);
+		} else {
+			const stylesheet = document.createElement('link');
+			stylesheet.href = src;
+			stylesheet.type = 'text/css'
+			stylesheet.rel = 'stylesheet'
+			document.getElementsByTagName('head')[0].appendChild(stylesheet);
+		}
+	}
+
+	window.onload = function() {
+		loadStyleSheet('./style.css');
+	}
+</script>
+
+
+
+@media only screen and (min-width: 768px) {
+    /* tablets and desktop */
+}
+
+@media only screen and (max-width: 767px) {
+    /* phones */
+}
+
+@media only screen and (max-width: 767px) and (orientation: portrait) {
+    /* portrait phones */
+}
+ or
+
+ <link rel="stylesheet" href="./style.css" media="only screen and (min-width:500px)">
+
+
+
+
+
+/* bad */
+.header .nav .item .link a.important {
+	color: pink;
+}
+
+/* good */
+a.important {
+	color: pink;
+}
+
+<script type="text/javascript"></script>
+- Critical scripts or your app script
+
+<script type="text/javascript" async></script>
+- If the core functionality requires javascript
+- Third part scripts that don't affect the DOM
+
+<script type="text/javascript" defer></script>
+- If the core functionality does not require javascript
+- Any third part scripts that arent that important and aren't above the fold.
+
+
+
+
+
+
+
