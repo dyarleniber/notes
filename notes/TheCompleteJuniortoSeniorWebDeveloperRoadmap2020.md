@@ -94,6 +94,8 @@
 
 ### Critical Rendering Path
 
+![Critical Rendering Path](https://miro.medium.com/max/1878/0*A24XmmK2IUz0wvkg.png)
+
 - Steps:
 	- Process HTML markup and build the DOM tree.
 	- Process CSS markup and build the CSSOM tree.
@@ -107,7 +109,7 @@ When a user requests a page for your site the page HTML starts streaming to the 
 
 After understanding the document this is what it does it starts creating the DOM, and again as it's building that as soon as it sees an external resource it goes ahead and starts downloading all of those.
 
-Usually the css and javascript files take high priority and other files like images take lower priority.
+> Usually the css and javascript files take high priority and other files like images take lower priority.
 
 - So how do we optimize this process?
 
@@ -124,12 +126,11 @@ By replacing them at the bottom or by placing them at the bottom (After end body
 
 CSS is called render blocking because in order to construct the rendered tree and print something onto the screen we're waiting for the CSS DOM to complete and combine it with the Dom to create the render tree, so CSS is rendered blocking.
 
-Internal ou inline styleshees are more faster than external css files
+> Internal ou inline styleshees are more faster than external css files.
 
-
-
-
-<script type="text/javascript">
+	- Only load whatever is needed.
+	- Above the fold loading.
+```javascript
 	const loadStyleSheet = src => {
 		if (document.createStylesheet) {
 			document.createStylesheet(src);
@@ -145,10 +146,9 @@ Internal ou inline styleshees are more faster than external css files
 	window.onload = function() {
 		loadStyleSheet('./style.css');
 	}
-</script>
-
-
-
+```
+	- Media attributes.
+```css
 @media only screen and (min-width: 768px) {
     /* tablets and desktop */
 }
@@ -160,14 +160,13 @@ Internal ou inline styleshees are more faster than external css files
 @media only screen and (max-width: 767px) and (orientation: portrait) {
     /* portrait phones */
 }
- or
-
- <link rel="stylesheet" href="./style.css" media="only screen and (min-width:500px)">
-
-
-
-
-
+```
+or
+```html
+<link rel="stylesheet" href="./style.css" media="only screen and (min-width:500px)">
+```
+	- Less specificity.
+```css
 /* bad */
 .header .nav .item .link a.important {
 	color: pink;
@@ -177,21 +176,26 @@ Internal ou inline styleshees are more faster than external css files
 a.important {
 	color: pink;
 }
+```
 
+- Step3 (JavaScript):
+
+	- Load Scripts asynchronously
+	- Defer Loading of scripts
+	- Minimize DOM manipulation
+	- Avoid long running Javascript
+
+![Loading Third-Party JavaScript](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/images/image_13.png)
+
+```html
 <script type="text/javascript"></script>
-- Critical scripts or your app script
+<!-- Critical scripts or your app script -->
 
 <script type="text/javascript" async></script>
-- If the core functionality requires javascript
-- Third part scripts that don't affect the DOM
+<!-- If the core functionality requires javascript -->
+<!-- Third part scripts that don't affect the DOM -->
 
 <script type="text/javascript" defer></script>
-- If the core functionality does not require javascript
-- Any third part scripts that arent that important and aren't above the fold.
-
-
-
-
-
-
-
+<!-- If the core functionality does not require javascript -->
+<!-- Any third part scripts that arent that important and aren't above the fold -->
+```
