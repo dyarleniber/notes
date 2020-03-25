@@ -199,3 +199,13 @@ a.important {
 <!-- If the core functionality does not require javascript -->
 <!-- Any third part scripts that arent that important and aren't above the fold -->
 ```
+
+> Your HTML will display quicker in older browsers if you keep the scripts at the end of the body right before closing the body tag. So, to preserve the load speed in older browsers, you don't want to put them anywhere else.
+
+> If your second script depends upon the first script (e.g. your second script uses the jQuery loaded in the first script), then you can't make them async without additional code to control execution order, but you can make them defer because defer scripts will still be executed in order, just not until after the document has been parsed. If you have that code and you don't need the scripts to run right away, you can make them async or defer.
+
+	- Tools for testing:
+		- PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)
+		- WebPageTest](https://www.webpagetest.org/)
+
+- [Prefetching, preloading, prebrowsing](https://css-tricks.com/prefetching-preloading-prebrowsing/) are other performance enhancing techniques.
