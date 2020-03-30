@@ -40,6 +40,9 @@ With static arrays, there's no guarantee that after we've allocated shelfs of me
 We solve this problem with dynamic arrays, it allow us to copy and rebuild an array at a new location which with more memory.
 If we wanted more memory, if we realize that we forgot another item on our list for example. What happens is we copy the entire array, we allocate new blocks of memory and paste the list plus the new item into that new location.
 
+> Most of time, and during interviews you will be talking about dynamic arrays and you will not have to worry about allocating memory and thinking about the possibility that you might have to copy the array.
+> When it comes to arrays, just because you are adding at the end using the push command, you can assume that it is O(1) most of the times.
+
 ### Static Array
 
 | Operation | Complexity |
@@ -57,6 +60,7 @@ If we wanted more memory, if we realize that we forgot another item on our list 
 | append*   | O(1)       |
 | insert    | O(n)       |
 | delete    | O(n)       |
+
 ###### `* Can be O(n)`
 
 > In javascript and other languages like Python, or Java, they work like a dynamic array. They automatically allocate memory according to the increase in size of the array.
