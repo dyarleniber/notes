@@ -34,6 +34,8 @@ Each data structure has their tradeoffs, some are good at certain operations and
 
 Arrays, which are sometimes called Lists, organizes items sequentially. That means one after another in memory.
 
+| Operation | Complexity |
+| ------ | ------ |
 | lookup | O(1) |
 | push | O(1) |
 | insert | O(n) |
