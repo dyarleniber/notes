@@ -33,15 +33,43 @@ Each data structure has their tradeoffs, some are good at certain operations and
 ## Arrays
 
 Arrays, which are sometimes called Lists, organizes items sequentially. That means one after another in memory.
+There are actually two types of arrays. One is called static and the other dynamic array.
+The one limitation of static array is that they're fixed in size, meaning you need to specify the number of elements.
+
+With static arrays, there's no guarantee that after we've allocated shelfs of memory that you can keep adding things on.
+We solve this problem with dynamic arrays, it allow us to copy and rebuild an array at a new location which with more memory.
+If we wanted more memory, if we realize that we forgot another item on our list for example. What happens is we copy the entire array, we allocate new blocks of memory and paste the list plus the new item into that new location.
+
+### Static Array
 
 | Operation | Complexity |
-| ------ | ------ |
-| lookup | O(1) |
-| push | O(1) |
-| insert | O(n) |
-| delete | O(n) |
+| --------- | ---------- |
+| lookup    | O(1)       |
+| push      | O(1)       |
+| insert    | O(n)       |
+| delete    | O(n)       |
+
+### Dynamic Array
+
+| Operation | Complexity |
+| --------- | ---------- |
+| lookup    | O(1)       |
+| append*   | O(1)       |
+| insert    | O(n)       |
+| delete    | O(n)       |
+###### `* Can be O(n)`
+
+> In javascript and other languages like Python, or Java, they work like a dynamic array. They automatically allocate memory according to the increase in size of the array.
+
+```c++
+// c++
+
+int a[4];
+```
 
 ```javascript
+// javascript
+
 const strings = ['a', 'b', 'c', 'd']; // 4*4 = 16 bytes of storage in a 32bits system
 
 // push
