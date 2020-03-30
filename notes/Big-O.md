@@ -1,5 +1,7 @@
 # Big-O (Asymptomatic analysis)
 
+![Big-O Complexity Chart](https://miro.medium.com/max/2928/1*5ZLci3SuR0zM_QlZOADv8Q.jpeg)
+
 ![Big-O Cheat Sheet Poster](https://www.bigocheatsheet.com/img/big-o-cheat-sheet-poster.png)
 
 ## What is good code? (3 pillars of programming)
