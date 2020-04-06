@@ -209,3 +209,43 @@ a.important {
 	- [WebPageTest](https://www.webpagetest.org/)
 
 - [Prefetching, preloading, prebrowsing](https://css-tricks.com/prefetching-preloading-prebrowsing/) are other performance enhancing techniques.
+
+
+## Performance part 2
+
+### Optimizing Code
+
+Only load what is needed:
+	- Code Splitting
+	- Tree Shaking
+Avoid blocking main thread
+Avoid Memory Leaks
+Avoid Multiple re-rendering
+
+- Code Splitting in React
+	- Modern web sites ship a lot of javascript. It is common to bundle scripts into large files or a bundled file. We just had one massive javascript file that was created by combining all our smaller ones and sending it as soon as the user enters our website. Now this was done because a large amount of requests were detrimental to your performance initially. However as JavaScript lines increased the files were becoming bigger and bigger and bigger.
+	- To avoid winding up with a large bundle, it’s good to get ahead of the problem and start “splitting” your bundle. Code-Splitting is a feature which can create multiple bundles that can be dynamically loaded at runtime.
+	- Code-splitting your app can help you “lazy-load” just the things that are currently needed by the user, which can dramatically improve the performance of your app.
+	- There are Route-based code splitting and Component-based code splitting according to [React documentation](https://reactjs.org/docs/code-splitting.html).
+- Error boundaries in React
+	- A JavaScript error in a part of the UI shouldn’t break the whole app. To solve this problem for React users, React 16 introduces a new concept of an “error boundary”.
+	- Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed. Error boundaries catch errors during rendering, in lifecycle methods, and in constructors of the whole tree below them.
+	- [Error boundaries - React documentation](https://reactjs.org/docs/error-boundaries.html)
+- Optimizing Performance in React
+	- We can install this plugin into our chrome browser to help us with React development:
+		- [React Developer Tools](https://reactjs.org/docs/optimizing-performance.html).
+		- This can be useful for identifying components that are being loaded unnecessarily, especially using the Highlight update option.
+	- To view performance metrics for our react app:
+		- Append ?react_perf to your local server URL (e.g. localhost:3000/?react_perf) and visit that URL in a browser (in Chrome devtools, in the performance tab for example).
+	- Internally, React uses several clever techniques to minimize the number of costly DOM operations required to update the UI. For many applications, using React will lead to a fast user interface without doing much work to specifically optimize for performance. Nevertheless, there are several ways you can speed up your React application:
+		- [Optimizing Performance - React documentation](https://reactjs.org/docs/error-boundaries.html).
+	- [Beware: React setState is asynchronous!](https://medium.com/@wereHamster/beware-react-setstate-is-asynchronous-ce87ef1a9cf3)
+		- setState() does not immediately mutate this.state but creates a pending state transition. Accessing this.state after calling this method can potentially return the existing value.
+	- [shouldComponentUpdate()](https://reactjs.org/docs/react-component.html#shouldcomponentupdate)
+		- Use shouldComponentUpdate() to let React know if a component’s output is not affected by the current change in state or props. The default behavior is to re-render on every state change.
+		- React.PureComponent is similar to React.Component. The difference between them is that React.Component doesn’t implement shouldComponentUpdate(), but React.PureComponent implements it with a shallow prop and state comparison. However, if you use complex data structures like deeply nested objects it may miss some props changes and not update the components. shouldComponentUpdate() does the same thing but you have a bit of control.
+	- [why-did-you-render](https://www.npmjs.com/package/@welldone-software/why-did-you-render)
+		- why-did-you-render patches React to notify you about avoidable re-renders. (Works with React Native as well.)
+
+### Progressive Web Apps
+
