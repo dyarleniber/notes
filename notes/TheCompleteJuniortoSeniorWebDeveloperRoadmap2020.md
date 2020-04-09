@@ -249,3 +249,27 @@ Avoid Multiple re-rendering
 
 ### Progressive Web Apps
 
+Progressive Web Apps are web apps that use emerging web browser APIs and features along with traditional progressive enhancement strategy to bring a native app-like user experience to cross-platform web applications. Progressive Web Apps are a useful design pattern, though they aren't a formalized standard.
+
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse)
+	- Lighthouse is an open-source, automated tool for improving the quality of web pages. You can run it against any web page, public or requiring authentication. It has audits for performance, accessibility, progressive web apps, SEO and more.
+
+In order to call a Web App a PWA, technically speaking it should have the following features: Secure contexts (HTTPS), one or more Service Workers, and a manifest file.
+
+- Secure contexts (HTTPS)
+	- The web application must be served over a secure network. Being a secure site is not only a best practice, but it also establishes your web application as a trusted site especially if users need to make secure transactions. Most of the features related to a PWA such as geolocation and even service workers are available only once the app has been loaded using HTTPS.
+	- [Let's Encrypt](https://letsencrypt.org/docs/)
+- Manifest file
+	- A JSON file that controls how your app appears to the user and ensures that progressive web apps are discoverable. It describes the name of the app, the start URL, icons, and all of the other details necessary to transform the website into an app-like format.
+	- [Favicon Generator](https://realfavicongenerator.net/)
+		-  All we need to do is provide an image and download it in different sizes and reference them in the manifest.
+		- Another thing that this web site does is previewing and customizing the splash screen.
+- Service workers
+	- A service worker is a script that allows intercepting and control of how a web browser handles its network requests and asset caching. With service workers, web developers can create reliably fast web pages and offline experiences.
+	- ![Service workers Diagram](https://miro.medium.com/max/1200/0*dVlfyYWOH1GnGNeL.jpg)
+
+[Making a Progressive Web App](https://create-react-app.dev/docs/making-a-progressive-web-app/)
+
+[Deployment on GitHub Pages](https://create-react-app.dev/docs/deployment/#github-pages)
+
+[Progressive Tooling - A list of community-built, third-party tools that can be used to improve page performance](https://progressivetooling.com/)
