@@ -211,6 +211,13 @@ a.important {
 - [Prefetching, preloading, prebrowsing](https://css-tricks.com/prefetching-preloading-prebrowsing/) are other performance enhancing techniques.
 
 
+## React + Redux
+
+[React code example - Robofriends project](https://github.com/aneagoie/robofriends)
+
+[React + Redux code example - Robofriends project](https://github.com/aneagoie/robofriends-redux)
+
+
 ## Performance part 2
 
 ### Optimizing Code
@@ -273,3 +280,118 @@ In order to call a Web App a PWA, technically speaking it should have the follow
 [Deployment on GitHub Pages](https://create-react-app.dev/docs/deployment/#github-pages)
 
 [Progressive Tooling - A list of community-built, third-party tools that can be used to improve page performance](https://progressivetooling.com/)
+
+[PWA code example - Robofriends project](https://github.com/aneagoie/robofriends-pwa)
+
+
+## Testing
+
+[Testing code example - Robofriends project](https://github.com/aneagoie/robofriends-testing)
+
+
+## TypeScript
+
+Overview
+```ts
+//boolean
+let isCool: boolean = false;
+
+//number
+let age: number = 56;
+
+//string
+let eyeColor: string = 'brown';
+let favoriteQuote: string = `I'm not old, I'm only ${age}`;
+
+//Array
+let pets: string[] = ['cat', 'mouse', 'dragon'];
+let pets2: Array<string> = ['pig', 'lion', 'dragon'];
+
+//Tuple
+let basket: [string, number];
+basket = ['basketball', 10];
+
+//Enum
+enum Size {Small = 1, Medium, Large}
+let sizeName: string = Size[2];
+alert(sizeName); // Displays 'Medium' as its value is 2 above
+
+//Any
+let whatever: any = 'aaaaghhhhhh noooooo!';
+
+//void
+let sing = (): void => console.log('Lalalala')
+
+//null and undefined
+let meh: undefined = undefined;
+let noo: null = null;
+
+//never
+let error = (): never => {
+  throw Error('blah!');
+}
+
+// Type Assertions:
+let ohhithere: any = "OH HI THERE";
+
+let strLength: number = (ohhithere as string).length;
+
+//Interface
+interface RobotArmy {
+  count: number,
+  type: string,
+  magic?: string
+}
+
+let fightRobotArmy = (robots: RobotArmy) =>{
+  console.log('FIGHT!');
+}
+let fightRobotArmy2 = (robots: {count: number, type: string, magic?: string}) =>{
+  console.log('FIGHT!');
+}
+
+//Function
+let fightRobotArmyF = (robots: RobotArmy): void =>{
+  console.log('FIGHT!');
+}
+let fightRobotArmy2F = (robots: {count: number, type: string, magic?: string}): void =>{
+  console.log('FIGHT!');
+}
+
+// *** Classes
+class Animal {
+    private sing: string;
+    constructor(sound: string) {
+        this.sing = sound;
+    }
+    greet() {
+        return "Hello, " + this.sing;
+    }
+}
+
+let lion = new Animal("Lion");
+// lion.sing
+
+
+//In TypeScript, there are several places where type inference
+//is used to provide type information when there is no explicit
+//type annotation. For example, in this code
+let x = 3;
+// automatimally detexts x is a number.
+
+//Union Type
+let confused: string | number = 'hello'
+```
+
+[I Finally Understand Static vs. Dynamic Typing and You Will Too!](https://hackernoon.com/i-finally-understand-static-vs-dynamic-typing-and-you-will-too-ad0c2bd0acc7)
+[How To Understand The Difference Between Statically - Dynamically - Strongly - Weakly Typed Language](https://hackernoon.com/actually-understand-statically-dynamically-strongly-weakly-typed-languages-axbpi3za2)
+[Why You Should Use TypeScript for Developing Web Applications](https://dzone.com/articles/what-is-typescript-and-why-use-it)
+[Why TypeScript is the best way to write Front-end in 2019](https://medium.com/@jtomaszewski/why-typescript-is-the-best-way-to-write-front-end-in-2019-feb855f9b164)
+[Download TypeScript](https://www.typescriptlang.org/download)
+[Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
+[TypeScript for JavaScript Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+[tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+[Interface vs Type alias in TypeScript 2.7](https://medium.com/@martin_hotell/interface-vs-type-alias-in-typescript-2-7-2a8f1777af4c)
+[Typescript: Interfaces vs. Type Aliases](https://www.briangonzalez.org/post/interface-types-vs-type-aliases-typescript)
+
+
