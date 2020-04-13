@@ -384,14 +384,23 @@ let confused: string | number = 'hello'
 ```
 
 [I Finally Understand Static vs. Dynamic Typing and You Will Too!](https://hackernoon.com/i-finally-understand-static-vs-dynamic-typing-and-you-will-too-ad0c2bd0acc7)
+
 [How To Understand The Difference Between Statically - Dynamically - Strongly - Weakly Typed Language](https://hackernoon.com/actually-understand-statically-dynamically-strongly-weakly-typed-languages-axbpi3za2)
+
 [Why You Should Use TypeScript for Developing Web Applications](https://dzone.com/articles/what-is-typescript-and-why-use-it)
+
 [Why TypeScript is the best way to write Front-end in 2019](https://medium.com/@jtomaszewski/why-typescript-is-the-best-way-to-write-front-end-in-2019-feb855f9b164)
+
 [Download TypeScript](https://www.typescriptlang.org/download)
+
 [Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
+
 [TypeScript for JavaScript Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+
 [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+
 [Interface vs Type alias in TypeScript 2.7](https://medium.com/@martin_hotell/interface-vs-type-alias-in-typescript-2-7-2a8f1777af4c)
+
 [Typescript: Interfaces vs. Type Aliases](https://www.briangonzalez.org/post/interface-types-vs-type-aliases-typescript)
 
 
