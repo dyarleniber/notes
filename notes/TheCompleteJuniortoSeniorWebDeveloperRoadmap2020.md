@@ -291,7 +291,107 @@ In order to call a Web App a PWA, technically speaking it should have the follow
 
 ## TypeScript
 
-Overview
+### Compiled vs. Interpreted and Type Checking (Statically type-checked languages vs. Dynamically type-checked languages)
+
+#### Compiled vs. Interpreted
+
+When source code is translated.
+
+- Source Code: Original code (usually typed by a human into a computer)
+- Translation: Converting source code into something a computer can read (i.e. machine code)
+- Run-Time: Period when program is executing commands (after compilation, if compiled)
+- Compiled: Code translated before run-time
+- Interpreted: Code translated on the fly, during execution
+
+#### Type Checking (Statically type-checked languages vs. Dynamically type-checked languages)
+
+When types are checked. It’s the process of verifying and enforcing the constraints of types. Usually performed by the compiler or interpreter at compile or run time. 
+
+- Static: Types checked before run-time
+- Dynamic: Types checked on the fly, during execution
+
+> "3" + 5 will raise a type error in strongly typed languages, such as Python and Go, because they don't allow for "type coercion": the ability for a value to change type implicitly in certain contexts (e.g. merging two types using +). Weakly typed languages, such as JavaScript, won't throw a type error (result: '35').
+
+The definitions of “Static & Compiled” and “Dynamic & Interpreted” are quite similar…but remember it’s “when types are checked” vs. “when source code is translated”.
+
+> Type-checking has nothing to do with the language being compiled or interpreted! You need to separate these terms conceptually.
+
+Statically type-checked languages pros and cons:
+- Pros
+	- Give better run-time performance.
+	- Is less prone to run-time errors.
+- Cons
+	- Do more processing before run-time (at compile time).
+	- Provide less flexibility to programmer.
+	
+Dynamically type-checked languages pros and cons:
+- Pros
+	- More efficient compiler/interpreters.
+	- Provides more flexibility.
+- Cons
+	- Type-checking at run-time affects performance.
+	- More prone to run-time errors.
+
+#### But What are Strongly Typed and Weakly Typed Languages?
+
+It’s a spectrum (turns out, there is no official demarcation of these terms agreed throughout the industry. It’s a spectrum.).
+So, this will be the terms the way they are often used.
+
+In Strongly typed languages once a type is assigned to a variable say at run time or compile time, it retains that type and can’t be intermingled in expressions with other types easily. 
+
+Whereas, in Weakly typed languages, once a type is assigned to a variable say at run-time or compile-time, it can be intermingled in expressions with other types easily.
+
+![Diagram](https://hackernoon.com/photos/hgW8mkSirqYHZWLkYLGuSG13sSA3-2le963zm8)
+
+#### Python Example (Dynamic, Interpreted):
+```python
+def foo(a):
+    if a > 0:
+        print 'Hi'
+    else:
+        print "3" + 5
+```
+```python
+foo(2)
+```
+
+Because Python is both interpreted and dynamically typed, it only translates and type-checks code it’s executing on. The else block never executes, so "3" + 5 is never even looked at!
+
+- What if it was statically typed?
+
+A type error would be thrown before the code is even run. It still performs type-checking before run-time even though it is interpreted.
+
+- What if it was compiled?
+
+The else block would be translated/looked at before run-time, but because it's dynamically typed it wouldn't throw an error! Dynamically typed languages don't check types until execution, and that line never executes.
+
+#### Performance
+
+A compiled language will have better performance at run-time if it’s statically typed because the knowledge of types allows for machine code optimization.
+
+Statically typed languages have better performance at run-time intrinsically due to not needing to check types dynamically while executing (it checks before running).
+
+Similarly, compiled languages are faster at run time as the code has already been translated instead of needing to “interpret”/translate it on the fly.
+
+Note that both compiled and statically typed languages will have a delay before running for translation and type-checking, respectively.
+
+> Static typing catches errors early, instead of finding them during execution (especially useful for long programs). It’s more “strict” in that it won’t allow for type errors anywhere in your program and often prevents variables from changing types, which further defends against unintended errors.
+
+References
+
+- [I Finally Understand Static vs. Dynamic Typing and You Will Too!](https://hackernoon.com/i-finally-understand-static-vs-dynamic-typing-and-you-will-too-ad0c2bd0acc7)
+- [How To Understand The Difference Between Statically - Dynamically - Strongly - Weakly Typed Language](https://hackernoon.com/actually-understand-statically-dynamically-strongly-weakly-typed-languages-axbpi3za2)
+
+### TypeScript
+
+TypeScript is an object-oriented programming language developed and maintained by the Microsoft Corporation. It is a typed superset of JavaScript that compiles to plain JavaScript.
+
+TypeScript totally follows the OOPS concept and with the help of TSC (TypeScript Compiler), we can convert Typescript code (.ts file) to JavaScript (.js file).
+
+![TypeScript](https://www.graycelltech.com/wp-content/uploads/2018/09/arrows1-1.png)
+
+#### Overview
+
 ```ts
 //boolean
 let isCool: boolean = false;
@@ -383,14 +483,6 @@ let x = 3;
 let confused: string | number = 'hello'
 ```
 
-[I Finally Understand Static vs. Dynamic Typing and You Will Too!](https://hackernoon.com/i-finally-understand-static-vs-dynamic-typing-and-you-will-too-ad0c2bd0acc7)
-
-[How To Understand The Difference Between Statically - Dynamically - Strongly - Weakly Typed Language](https://hackernoon.com/actually-understand-statically-dynamically-strongly-weakly-typed-languages-axbpi3za2)
-
-[Why You Should Use TypeScript for Developing Web Applications](https://dzone.com/articles/what-is-typescript-and-why-use-it)
-
-[Why TypeScript is the best way to write Front-end in 2019](https://medium.com/@jtomaszewski/why-typescript-is-the-best-way-to-write-front-end-in-2019-feb855f9b164)
-
 [Download TypeScript](https://www.typescriptlang.org/download)
 
 [Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
@@ -399,8 +491,20 @@ let confused: string | number = 'hello'
 
 [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
 
-[Interface vs Type alias in TypeScript 2.7](https://medium.com/@martin_hotell/interface-vs-type-alias-in-typescript-2-7-2a8f1777af4c)
+[DefinitelyTyped - The repository for high quality TypeScript type definitions](http://definitelytyped.org/)
 
-[Typescript: Interfaces vs. Type Aliases](https://www.briangonzalez.org/post/interface-types-vs-type-aliases-typescript)
+[Adding TypeScript to a React project](https://create-react-app.dev/docs/adding-typescript/)
+
+#### Cons
+
+TypeScript adds a lot of complexity to a project:
+- We have to make sure that we have the typescript files for our third party libraries (like React).
+- We have to learn new types that these third party libraries provide.
+- We are hoping that these declaration files are kept up to date as the actual package gets updated.
+
+Switching to it in an existing project is definitely a lot of work and it should be strongly thought over before doing so.
+Some libraries are of course written in TypeScript, such as material-ui, but some require you to install an additional types/ dependency which can be a bit annoying, not mentioning the packages that don’t support type definitions well or not at all. 
+
+[TypeScript code example - Robofriends project](https://github.com/aneagoie/robofriends-typescript-completed)
 
 
