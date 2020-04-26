@@ -1396,10 +1396,18 @@ OK
 
 
 
+
+
+
 Sessions + JWT
 
+https://dzone.com/articles/cookies-vs-tokens-the-definitive-guide
 
+https://cdn.auth0.com/blog/cookies-vs-tokens/cookie-token-auth.png
 
+https://stackoverflow.com/questions/17000835/token-authentication-vs-cookies
+
+https://scotch.io/bar-talk/why-jwts-suck-as-session-tokens
 
 
 
