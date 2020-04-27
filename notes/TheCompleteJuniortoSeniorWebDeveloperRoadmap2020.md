@@ -1409,7 +1409,13 @@ https://stackoverflow.com/questions/17000835/token-authentication-vs-cookies
 
 https://scotch.io/bar-talk/why-jwts-suck-as-session-tokens
 
+https://medium.com/better-programming/when-to-use-callback-function-of-setstate-in-react-37fff67e5a6c
 
+https://stackoverflow.com/questions/42038590/when-to-use-react-setstate-callback
+
+https://reactjs.org/docs/portals.html
+
+https://www.w3schools.com/charsets/ref_html_entities_4.asp
 
 
 
