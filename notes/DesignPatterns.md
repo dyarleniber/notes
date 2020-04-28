@@ -11,6 +11,34 @@ Design patterns differ by their complexity, level of detail and scale of applica
 The most basic and low-level patterns are often called idioms. They usually apply only to a single programming language.
 The most universal and high-level patterns are architectural patterns. Developers can implement these patterns in virtually any language. Unlike other patterns, they can be used to design the architecture of an entire application.
 
+Most common:
+
+- Abstract Factory
+- Factory method
+- Static Factory
+- Singleton
+- Builder
+- Prototype 
+
+- Adapter
+- Bridge
+- Composite
+- Decorator
+- Facade
+- Flyweight
+- Proxy
+
+- Chain Of Responsibility
+- Command
+- Iterator
+- Mediator
+- Memento
+- Observer
+- State
+- Strategy
+- Template Method
+- Visitor
+
 ---
 
 ## CREATIONAL PATTERN
@@ -44,8 +72,6 @@ Restrict instantiation of a class to one object.
 
 Avoid expensive acquisition and release of resources by recycling objects that are no longer in use.
 
-
-
 ### Dependency Injection pattern
 
 A class accepts the objects it requires from an injector instead of creating the objects directly.
@@ -53,8 +79,6 @@ A class accepts the objects it requires from an injector instead of creating the
 ### Lazy initialization pattern
 
 Tactic of delaying the creation of an object, the calculation of a value, or some other expensive process until the first time it is needed.
-
-
 
 ---
 
@@ -217,52 +241,6 @@ A way to separate an algorithm from an object.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Strategy
-Chain of responsability
-Template method
-Decorator
-State
-Criacionais (builder)
-Observer
-Factory
-Memento
-Interpreter
-Visitor
-Adapter
-Bridge
-Command
-Facade
-Singleton
-
-
-builder
-https://www.youtube.com/watch?v=W-96z2EjoJ0
-decorator
-https://www.youtube.com/watch?v=ZGr1X-RsvpQ
-strategy
-https://www.youtube.com/watch?v=pxmqkzWPW6E
-singleton
-https://www.youtube.com/watch?v=IXgE3jmwdk0&list=WL&index=71&t=0s
-adapter
-https://www.youtube.com/watch?v=5AiiHFizQWY&list=WL&index=44&t=0s
-
-
-service pattern
-https://www.youtube.com/watch?v=szGb93_hXgI
-
-design patterns in plan english
-https://www.youtube.com/watch?v=NU_1StN5Tkk&list=WL&index=355&t=0s
 
 
 
