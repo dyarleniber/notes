@@ -11,33 +11,34 @@ Design patterns differ by their complexity, level of detail and scale of applica
 The most basic and low-level patterns are often called idioms. They usually apply only to a single programming language.
 The most universal and high-level patterns are architectural patterns. Developers can implement these patterns in virtually any language. Unlike other patterns, they can be used to design the architecture of an entire application.
 
-Most common:
+Most common patterns
 
-- Abstract Factory
-- Factory method
-- Static Factory
-- Singleton
-- Builder
-- Prototype 
-
-- Adapter
-- Bridge
-- Composite
-- Decorator
-- Facade
-- Flyweight
-- Proxy
-
-- Chain Of Responsibility
-- Command
-- Iterator
-- Mediator
-- Memento
-- Observer
-- State
-- Strategy
-- Template Method
-- Visitor
+- Creational Pattern
+	- Abstract Factory
+	- Factory method
+	- Static Factory
+	- Singleton
+	- Builder
+	- Prototype
+- Structural Pattern
+	- Adapter
+	- Bridge
+	- Composite
+	- Decorator
+	- Facade
+	- Flyweight
+	- Proxy
+- Behavioral Pattern
+	- Chain Of Responsibility
+	- Command
+	- Iterator
+	- Mediator
+	- Memento
+	- Observer
+	- State
+	- Strategy
+	- Template Method
+	- Visitor
 
 ---
 
