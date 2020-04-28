@@ -4,7 +4,7 @@ Simply put, a data structure is a container that stores data in a specific layou
 
 Data structure is a collection of values and algorithms are the steps or processes we put into place to manipulate these collection of values. It's what allows us to write programs.
 
-A person who knows how data structures and algorithms work and how to use them can write programs great programs.
+A person who knows how data structures and algorithms and how to use them, can write programs great programs.
 
 No matter what problem are you solving, in one way or another you have to deal with data — whether it’s an employee’s salary, stock prices, a grocery list, or even a simple telephone directory.
 
@@ -379,6 +379,51 @@ mergeSortedArrays([0,3,4,31], [3,4,6,30]);
 	- [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/description/)
 	- [Rotate Array](https://leetcode.com/problems/rotate-array/description/)
 	- [Longest Word - This question can be done using arrays, or even regular expressions](https://www.coderbyte.com/language/Longest%20Word)
+
+
+## HASH TABLE
+
+Hash table is a data structure that can map keys to values.A hash table uses a hash function to compute an index into an array of buckets, from which the desired values can be found.Time complexity of a well defined Hash function can be O(1).
+
+![Hash table example](https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Hash_table_3_1_1_0_1_0_0_SP.svg/315px-Hash_table_3_1_1_0_1_0_0_SP.svg.png)
+
+Some Important properties of Hash Table:
+  - Values are not stored in sorted order.
+  - In a hash table, one must also handle potential collisions. This is often done by chaining, which means to create a linked list of all the values whose keys map to a particular index.
+
+A hash table is traditionally implemented with an array of linked lists. When we want to insert a key/Value pair, we map the key to an index in the array using the hash function. The value is then inserted into the linked list at that position.
+
+### Hash Collisions
+
+When you are using a hash map you have to assume that hash collisions are unavoidable, since you will be using a hash map which is significantly smaller in size than the amount of data you have. The two main approaches to solving these collisions are Chaining and Open Addressing.
+
+#### Chaining
+
+One way you can resolve hash collisions is using chaining. What this means is for each key-value mapping in the hash table, the value field will not hold only one cell of data, but rather a linked list of data.
+The major setback regarding chaining is the increase in time complexity. This means, that instead of the O(1) properties of a regular hash table, each action will now take greater time as we need to traverse the linked list.
+
+![Hash collision by separate chaining](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hash_table_5_0_1_1_1_1_0_LL.svg/500px-Hash_table_5_0_1_1_1_1_0_LL.svg.png)
+
+#### Open Addressing
+
+Another way you can resolve hash collisions is using open addressing. In this method once a value is mapped to a key that is already occupied, you move along the adjacent keys of the hash table in a preordained determined fashion, until you find a key with an empty value. 
+The major setback of open addressing lies in the fact that when needing to look for values, they might not be in the place you expect them to be (the key mapping). Therefore you have to traverse parts of the hash table in order to find the value you are looking for, thus resulting in increased time complexity.
+
+![Hash collision resolved by open addressing](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Hash_table_5_0_1_1_1_1_0_SP.svg/380px-Hash_table_5_0_1_1_1_1_0_SP.svg.png)
+
+#### Time Complexity
+
+It is very important to note that hash tables have amortised constant complexity i.e. on an average case the complexity will be O(1). In worst case, If too many elements were hashed into the same key, it can have a time complexity of O(n).
+
+#### Visualization 
+
+- https://www.cs.usfca.edu/~galles/visualization/OpenHash.html
+
+### References
+
+- https://guide.freecodecamp.org/computer-science/data-structures/hash-tables/
+- https://en.wikipedia.org/wiki/Hash_table
+- https://en.wikipedia.org/wiki/Comparison_of_programming_languages_(associative_array)
 
 
 ## Links
