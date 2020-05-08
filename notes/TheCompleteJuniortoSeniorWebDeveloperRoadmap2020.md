@@ -1460,6 +1460,354 @@ https://github.com/aneagoie/smart-brain-boost-api-dockerized
 
 
 
+AWS
+
+amazon web services
+
+
+front 
+ec2
+s3
+dynamodb
+lambda
+
+
+aws diagrams
+
+aws flows
+
+Monolithic vs Micro-services
+
+
+lambda functions
+
+- create function
+- name: rankly
+- nodejs last version
+- choose a custom role
+- create
+
+
+use a tool called serverless to deploy the function
+instead of using the aws dashboard
+
+Just a heads up that since the next video was created, AWS Lambda uses the async version of the hello function rather than the callback. It instead looks something like this:
+
+'use strict'; 
+module.exports.hello = async (event, context) => {  
+    return {    
+        statusCode: 200,    
+        body: JSON.stringify({      
+            message: 'Go Serverless v1.0! Your function executed successfully!',      
+            input: event,    
+        }),  
+    };    
+// Use this code if you don't use the http event with the LAMBDA-PROXY integration  
+// return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+};
+
+Underneath it all, it is still doing the same thing as you will see in this video coming up
+
+
+
+sudo npm install -g serverless
+
+sls create -t aws-nodejs
+
+mkdir rankly
+
+-copy the files to the new folder
+
+> handler.js is the function
+
+
+aws iam
+
+add a user rankly-lambda with programmatic access
+atach existing policies - administration access
+
+- user the user from iam to cconfigure the serverless
+sls config credentials --provider aws --key MYKEY --secret MYSECRET
+
+https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html
+
+https://www.serverless.com/framework/docs/providers/aws/guide/iam/
+
+- uptade the name of the service in serverless.yaml file
+
+- create a http event in yaml file above the function handler definition
+
+- update the stage to prod on yaml file
+
+```
+events:
+	- http:
+		path: rank
+		method: get
+```
+
+```
+'use strict';
+
+const emojis = [
+  '😄','😃','😀','😊','😉','😍','🔶','🔷', '🚀'
+];
+module.exports.hello = (event, context, callback) => {
+  const rank = event.queryStringParameters.rank;
+  const rankEmoji = emojis[rank >= emojis.length ? emojis.length - 1 : rank];
+  const response = {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin" : "*" // Required for CORS support to work
+    },
+    body: JSON.stringify({
+      message: 'Rank generated!',
+      input: rankEmoji,
+    }),
+  };
+
+  callback(null, response);
+
+  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
+  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+};
+```
+
+tto deploy just run
+- sls deploy
+
+you can access the function by the url provided after the deploy
+
+
+to run
+- sls invoke --function rank
+
+to run locally
+- sls invoke local --function rank
+
+
+
+update fron end side
+
+- component rank
+- 
+
+https://github.com/aneagoie/smart-brain-boost-lambda
+
+
+
+
+As a bonus and if you really want to challenge yourself, try and implement this feature:
+
+Ability for users to upload new pictures to their profile. 
+
+As an idea, you can use an upload profile button to trigger a lambda function that uploads the image to an S3 bucket where you store user profile pictures. Good luck!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Performance part 3
+
+
+
+Backend
+
+- CDNs
+	- content delivery network
+		-pros and cons
+		-cache
+	- cloudflare
+	- hoe to configure
+	- dns name servers
+- GZIP
+	- npm install compression (as a middleeware in a express api)
+	- github pages does it automatically
+	- how to configure in different seervers
+	- https://github.com/google/brotli is a little bit better than gzip
+- DB Scaling
+	- Six items that are the main ways that a database can scale
+		- Identify Inefficient Queries
+			- use indexing (pros and cons)
+		- Increase Memory
+		- Vertical Scaling (Redis, Memcached)
+		- Sharding
+		- More Databases
+		- Database type
+- Caching
+	- cahe in browser
+	- how to control the cache in browsers
+	- caching brusting (in react)
+	- http cache
+		- Cache-Control and ETag header in http requests
+		- https://blogs.sap.com/wp-content/uploads/2020/03/http-request.png
+		-
+```javascript
+const express = require('express')
+const cors = require('cors')
+const path = require('path')
+
+const app = express()
+app.use(cors())
+app.use('/static', express.static(path.join(__dirname, 'public'), {'maxage': '2h'}))
+
+app.get('/hi', (req, res) => {
+	res.header('Cache-Control', 'public, max-age=86400')
+	res.header('Content-Type', 'text/html')
+	res.send(new Buffer('<h2>Test String</h2>'))
+})
+```
+	- https://medium.freecodecamp.org/the-hidden-components-of-web-caching-970854fe2c49
+	- https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching
+	- https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers
+- Load Balancing
+	- apache and nginx
+	- aws load balancer
+	- nginx can be used as a load balancer and can cache the static files as well
+	- https://github.com/aneagoie/load-balancer-exercise
+	- load balancing test
+	- there are a lot o packages for example loadtest
+	- sudo npm install -g loadtest
+	- loadtest -t 5 -c 100 --rps 100 http>//localhost:80
+	- run 1 time with the docker (load balancer) and otheer with just the single server (npm start) and see the difference increasing the params test like loadtest -t 5 -c 1000 --rps 500 http://localhost:80
+	- because we are running this on a container it is slower than if we actually implemented load balancing properly
+	- try to make the loadbalancer faster than single server#
+	- https://nginx.org/en/docs/
+	- https://www.linode.com/docs/web-servers/nginx/how-to-configure-nginx/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CI/CD
+
+- Continuous Integration, Continuous Delivery, Continuous Deployment
+- benefits
+- small incremental changes
+- circle ci
+- circle ci and github
+- ci with github
+- https://code-maze.com/top-8-continuous-integration-tools/
+- https://github.com/aneagoie/robofriends-ci
+- config.yaml example
+```
+version: 2
+jobs:
+   build:
+     docker:
+       - image: circleci/node:8.9
+     steps:
+       - checkout
+       - run: npm install
+       - run: CI=true npm run build
+   test:
+     docker:
+       - image: circleci/node:8.9
+     steps:
+       - checkout
+       - run: npm install
+       - run: npm run test
+   hithere:
+     docker:
+       - image: circleci/node:8.9
+     steps:
+       - checkout
+       - run: echo "Hellloooo!"
+workflows:
+  version: 2
+  build-test-and-lint:
+    jobs:
+      - build
+      - hithere
+      - test:
+          requires:
+            - hithere
+```
+- exec prettier on pre commit hook
+- https://prettier.io/docs/en/precommit.html
+- webpack-bundle-analyzer package
+- search for ci/cd process used by companies
+- staging environment
+- code review
+- acceptance test
+- smoke test
+- new relic
+- graphana
+
+
+
+
+
+
+
+
+
+
+
+
+Extra Bits
+
+- Complexity vs Simplicity
+Always choose simplicity over complexity
+Complexity and Simplicity is on a spectrum not binary, It's not either simplistic or complex. That means it's not right or wrong
+
+- NPM is not your friend
+npm install is not your answer
+
+- Learn to Learn
+
+- Start with Why
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
