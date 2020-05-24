@@ -1,5 +1,392 @@
 # React
 
+React is a JavaScript library for building user interfaces.
+
+Example:
+
+```jsx
+class TodoApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { items: [], text: '' };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>TODO</h3>
+        <TodoList items={this.state.items} />
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="new-todo">
+            What needs to be done?
+          </label>
+          <input
+            id="new-todo"
+            onChange={this.handleChange}
+            value={this.state.text}
+          />
+          <button>
+            Add #{this.state.items.length + 1}
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  handleChange(e) {
+    this.setState({ text: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    if (this.state.text.length === 0) {
+      return;
+    }
+    const newItem = {
+      text: this.state.text,
+      id: Date.now()
+    };
+    this.setState(state => ({
+      items: state.items.concat(newItem),
+      text: ''
+    }));
+  }
+}
+
+class TodoList extends React.Component {
+  render() {
+    return (
+      <ul>
+        {this.props.items.map(item => (
+          <li key={item.id}>{item.text}</li>
+        ))}
+      </ul>
+    );
+  }
+}
+
+ReactDOM.render(
+  <TodoApp />,
+  document.getElementById('todos-example')
+);
+```
+
+## [The Component Lifecycle](https://reactjs.org/docs/react-component.html)
+
+Each component has several lifecycle methods that you can override to run code at particular times in the process.
+
+- Mounting
+	- constructor()
+		- The constructor for a React component is called before it is mounted.
+	- render()
+		- The render() method is the only required method in a class component.
+	- componentDidMount()
+		- It is invoked immediately after a component is mounted (inserted into the tree).
+- Updating
+	- shouldComponentUpdate()
+		- Use it to let React know if a component's output is not affected by the current change in state or props.
+	- render()
+	- componentDidUpdate()
+		- It is invoked immediately after updating occurs. This method is not called for the initial render.
+- Unmounting
+	- componentWillUnmount()
+		- It is invoked immediately before a component is unmounted and destroyed.
+
+
+## [Create React App](https://create-react-app.dev/)
+
+Create React App is a comfortable environment for learning React, and is the best way to start building a new single-page application in React.
+
+
+## [Hooks](https://reactjs.org/docs/hooks-intro.html)
+
+Hooks are a new addition in React 16.8. They let you use state and other React features without writing a class.
+
+### Motivation
+
+Problems that hooks solve:
+
+- It's hard to reuse stateful logic between components
+	- Patterns like render props and higher-order components that try to solve this. But these patterns require you to restructure your components when you use them, which can be cumbersome and make code harder to follow.
+	- With Hooks, you can extract stateful logic from a component so it can be tested independently and reused.
+	- Hooks allow you to reuse stateful logic without changing your component hierarchy.
+- Complex components become hard to understand
+	- We have often had to maintain components that started out simple but grew into an unmanageable mess of stateful logic and side effects. Each lifecycle method often contains a mix of unrelated logic.
+	- To solve this, Hooks let you split one component into smaller functions based on what pieces are related (such as setting up a subscription or fetching data).
+- Classes confuse both people and machines
+	- Classes make code reuse and code organization more difficult.
+	- To solve these problems, Hooks let you use more of React's features without classes.
+
+### Main Hooks
+
+#### useState
+
+Returns a stateful value, and a function to update it.
+
+```jsx
+const [state, setState] = useState(initialState);
+```
+
+Example:
+```jsx
+function Counter({initialCount}) {
+  const [count, setCount] = useState(initialCount);
+  return (
+    <>
+      Count: {count}
+      <button onClick={() => setCount(initialCount)}>Reset</button>
+      <button onClick={() => setCount(prevCount => prevCount - 1)}>-</button>
+      <button onClick={() => setCount(prevCount => prevCount + 1)}>+</button>
+    </>
+  );
+}
+```
+
+> Unlike the setState method found in class components, useState does not automatically merge update objects. You can replicate this behavior by combining the function updater form with object spread syntax:
+```jsx
+setState(prevState => {
+  // Object.assign would also work
+  return {...prevState, ...updatedValues};
+});
+```
+> Another option is useReducer, which is more suited for managing state objects that contain multiple sub-values.
+
+##### Lazy initial state
+
+```jsx
+const [state, setState] = useState(() => {
+  const initialState = someExpensiveComputation(props);
+  return initialState;
+});
+```
+
+#### useEffect
+
+Accepts a function that contains imperative, possibly effectful code.
+
+```jsx
+useEffect(didUpdate);
+```
+
+The function passed to useEffect will run after the render is committed to the screen. 
+By default, effects run after every completed render, but you can choose to fire them only when certain values have changed.
+
+##### Cleaning up an effect
+
+Often, effects create resources that need to be cleaned up before the component leaves the screen, such as a subscription or timer ID. To do this, the function passed to useEffect may return a clean-up function. For example, to create a subscription:
+
+```jsx
+useEffect(() => {
+  const subscription = props.source.subscribe();
+  return () => {
+    // Clean up the subscription
+    subscription.unsubscribe();
+  };
+});
+```
+
+The clean-up function runs before the component is removed from the UI to prevent memory leaks.
+Additionally, if a component renders multiple times (as they typically do), the previous effect is cleaned up before executing the next effect.
+
+##### Timing of effects
+
+Unlike componentDidMount and componentDidUpdate, the function passed to useEffect fires after layout and paint, during a deferred event. (Most types of work shouldn't block the browser from updating the screen).
+
+However, not all effects can be deferred. For example, a DOM mutation that is visible to the user must fire synchronously before the next paint so that the user does not perceive a visual inconsistency.
+
+For these types of effects, React provides one additional Hook called useLayoutEffect. It has the same signature as useEffect, and only differs in when it is fired.
+
+##### Conditionally firing an effect
+
+The default behavior for effects is to fire the effect after every completed render. That way an effect is always recreated if one of its dependencies changes.
+
+However, this may be overkill in some cases, like the subscription example from the previous section. We don't need to create a new subscription on every update, only if the source prop has changed.
+
+To implement this, pass a second argument to useEffect that is the array of values that the effect depends on. Our updated example now looks like this:
+
+```jsx
+useEffect(
+  () => {
+    const subscription = props.source.subscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
+  },
+  [props.source],
+);
+```
+
+Now the subscription will only be recreated when props.source changes.
+
+> If you use this optimization, make sure the array includes all values from the component scope (such as props and state) that change over time and that are used by the effect.
+
+> If you want to run an effect and clean it up only once (on mount and unmount), you can pass an empty array ([]) as a second argument. 
+
+> Passing [] as the second argument is closer to the familiar componentDidMount and componentWillUnmount mental model.
+
+> We recommend using the exhaustive-deps rule as part of our eslint-plugin-react-hooks package. It warns when dependencies are specified incorrectly and suggests a fix.
+
+The array of dependencies is not passed as arguments to the effect function. Conceptually, though, that's what they represent: every value referenced inside the effect function should also appear in the dependencies array.
+
+#### useReducer
+
+```jsx
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+```
+
+- An alternative to useState. Accepts a reducer of type (state, action) => newState, and returns the current state paired with a dispatch method.
+
+Here's the counter example from the useState section, rewritten to use a reducer:
+
+```jsx
+const initialState = {count: 0};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return {count: state.count + 1};
+    case 'decrement':
+      return {count: state.count - 1};
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+      <button onClick={() => dispatch({type: 'increment'})}>+</button>
+    </>
+  );
+}
+```
+
+> React doesn't use the state = initialState argument convention popularized by Redux. The initial value sometimes needs to depend on props and so is specified from the Hook call instead. If you feel strongly about this, you can call useReducer(reducer, undefined, reducer) to emulate the Redux behavior, but it's not encouraged.
+
+### Building Your Own Hooks
+
+Building your own Hooks lets you extract component logic into reusable functions.
+
+When we want to share logic between two JavaScript functions, we extract it to a third function. Both components and Hooks are functions, so this works for them too!
+
+```jsx
+import { useState, useEffect } from 'react';
+
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null);
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline);
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+    };
+  });
+
+  return isOnline;
+}
+```
+
+#### Using a Custom Hook
+
+```jsx
+function FriendStatus(props) {
+  const isOnline = useFriendStatus(props.friend.id);
+
+  if (isOnline === null) {
+    return 'Loading...';
+  }
+  return isOnline ? 'Online' : 'Offline';
+}
+```
+
+#### Pass Information Between Hooks
+
+Since Hooks are functions, we can pass information between them.
+
+```jsx
+const friendList = [
+  { id: 1, name: 'Phoebe' },
+  { id: 2, name: 'Rachel' },
+  { id: 3, name: 'Ross' },
+];
+
+function ChatRecipientPicker() {
+  const [recipientID, setRecipientID] = useState(1);
+  const isRecipientOnline = useFriendStatus(recipientID);
+
+  return (
+    <>
+      <Circle color={isRecipientOnline ? 'green' : 'red'} />
+      <select
+        value={recipientID}
+        onChange={e => setRecipientID(Number(e.target.value))}
+      >
+        {friendList.map(friend => (
+          <option key={friend.id} value={friend.id}>
+            {friend.name}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+}
+```
+
+We keep the currently chosen friend ID in the recipientID state variable, and update it if the user chooses a different friend in the select picker.
+
+Because the useState Hook call gives us the latest value of the recipientID state variable, we can pass it to our custom useFriendStatus Hook as an argument:
+
+
+## Testing
+
+- Tools
+	- Jest
+		- Jest is a Testing Framework (usually used as a test runner).
+		- [Documentation](https://jestjs.io/en/)
+	- Enzyme
+		- Enzyme is a Testing utility for React to test React Components' output.
+		- [Documentation](https://enzymejs.github.io/enzyme/)
+
+Create React App uses Jest as its test runner.
+
+[This is the Create React App Testing documentation.](https://create-react-app.dev/docs/running-tests/)
+
+> Snapshot Testing is a feature of Jest that automatically generates text snapshots of your components and saves them on the disk so if the UI output changes, you get notified without manually writing any assertions on the component output. [Read more about snapshot testing.](https://jestjs.io/docs/en/snapshot-testing)
+
+When you run npm test, Jest will launch in watch mode. Every time you save a file, it will re-run the tests, like how npm start recompiles the code.You can disable this behavior by passing in the --watchAll=false flag.
+
+> Jest has an integrated coverage reporter that works well with ES6 and requires no configuration.
+
+- Run the tests using the following command
+```shell
+npm test --watchAll=false
+```
+
+- Run the tests including a coverage report using the following command
+```shell
+npm test -- --coverage --watchAll=false
+```
+
+### Testing with React/Redux
+
+Because most of the Redux code you write are functions, and many of them are pure, they are easy to test without mocking.
+
+- Examples of testing with Redux
+	- https://redux.js.org/recipes/writing-tests
+
+- Best practices for testing with Redux
+	- https://willowtreeapps.com/ideas/best-practices-for-unit-testing-with-a-react-redux-approach
+	- https://jsramblings.com/3-ways-to-test-mapstatetoprops-and-mapdispatchtoprops/
+
 
 ## Redux
 
@@ -110,45 +497,3 @@ Dan Abramov felt that flux architecture could be simpler. Consequently, Dan Abra
 - https://medium.com/@madasamy/flux-vs-mvc-design-pattern-de134dfaa12b
 - https://www.clariontech.com/blog/mvc-vs-flux-vs-redux-the-real-differences
 - https://medium.com/better-programming/a-simple-redux-tutorial-starter-complete-code-example-9b2923572d71
-
-
-## Testing
-
-- Tools
-	- Jest
-		- Jest is a Testing Framework (usually used as a test runner).
-		- [Documentation](https://jestjs.io/en/)
-	- Enzyme
-		- Enzyme is a Testing utility for React to test React Components' output.
-		- [Documentation](https://enzymejs.github.io/enzyme/)
-
-Create React App uses Jest as its test runner.
-
-[This is the Create React App Testing documentation.](https://create-react-app.dev/docs/running-tests/)
-
-> Snapshot Testing is a feature of Jest that automatically generates text snapshots of your components and saves them on the disk so if the UI output changes, you get notified without manually writing any assertions on the component output. [Read more about snapshot testing.](https://jestjs.io/docs/en/snapshot-testing)
-
-When you run npm test, Jest will launch in watch mode. Every time you save a file, it will re-run the tests, like how npm start recompiles the code.You can disable this behavior by passing in the --watchAll=false flag.
-
-> Jest has an integrated coverage reporter that works well with ES6 and requires no configuration.
-
-- Run the tests using the following command
-```shell
-npm test --watchAll=false
-```
-
-- Run the tests including a coverage report using the following command
-```shell
-npm test -- --coverage --watchAll=false
-```
-
-### Testing with React/Redux
-
-Because most of the Redux code you write are functions, and many of them are pure, they are easy to test without mocking.
-
-- Examples of testing with Redux
-	- https://redux.js.org/recipes/writing-tests
-
-- Best practices for testing with Redux
-	- https://willowtreeapps.com/ideas/best-practices-for-unit-testing-with-a-react-redux-approach
-	- https://jsramblings.com/3-ways-to-test-mapstatetoprops-and-mapdispatchtoprops/
