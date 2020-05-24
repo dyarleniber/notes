@@ -345,6 +345,112 @@ We keep the currently chosen friend ID in the recipientID state variable, and up
 
 Because the useState Hook call gives us the latest value of the recipientID state variable, we can pass it to our custom useFriendStatus Hook as an argument:
 
+### Using Hooks with Redux
+
+React Redux now offers a set of hook APIs as an alternative to the existing connect() Higher Order Component. These APIs allow you to subscribe to the Redux store and dispatch actions, without having to wrap your components in connect().
+
+As with connect(), you should start by wrapping your entire application in a <Provider> component to make the store available throughout the component tree:
+
+```jsx
+const store = createStore(rootReducer)
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+
+React Redux now includes its own useSelector and useDispatch Hooks that can be used instead of connect.
+
+- useSelector is analogous to connect’s mapStateToProps. You pass it a function that takes the Redux store state and returns the pieces of state you’re interested in.
+
+- useDispatch replaces connect’s mapDispatchToProps but is lighter weight. All it does is return your store’s dispatch method so you can manually dispatch actions.
+
+Example using connect:
+
+```jsx
+import React from "react";
+import { connect } from "react-redux";
+import { addCount } from "./store/counter/actions";
+
+export const Count = ({ count, addCount }) => {
+  return (
+    <main>
+      <div>Count: {count}</div>
+      <button onClick={addCount}>Add to count</button>
+    </main>
+  );
+};
+
+const mapStateToProps = state => ({
+  count: state.counter.count
+});
+
+const mapDispatchToProps = { addCount };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Count);
+```
+
+Now, with the new React Redux Hooks instead of connect:
+
+```jsx
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCount } from "./store/counter/actions";
+
+export const Count = () => {
+  const count = useSelector(state => state.counter.count);
+  const dispatch = useDispatch();
+
+  return (
+    <main>
+      <div>Count: {count}</div>
+      <button onClick={() => dispatch(addCount())}>Add to count</button>
+    </main>
+  );
+};
+```
+
+#### useSelector gotchas
+
+useSelector diverges from mapStateToProps in one fairly big way: it uses strict object reference equality (===) to determine if components should re-render instead of shallow object comparison.
+
+For example, in this snippet:
+
+```jsx
+const { count, user } = useSelector(state => ({
+  count: state.counter.count,
+  user: state.user,
+}));
+```
+
+useSelector is returning a different object literal each time it’s called. When the store is updated, React Redux will run this selector, and since a new object was returned, always determine that the component needs to re-render, which isn’t what we want.
+
+The simple rule to avoid this is to either call useSelector once for each value of your state that you need:
+
+```jsx
+const count = useSelector(state => state.counter.count);
+const user = useSelector(state => state.user);
+```
+
+or, when returning an object containing several values from the store, explicitly tell useSelector to use a shallow equality comparison by passing the comparison method as the second argument:
+
+```jsx
+import { shallowEqual, useSelector } from 'react-redux';
+
+const { count, user } = useSelector(state => ({
+  count: state.counter.count,
+  user: state.user,
+}), shallowEqual);
+```
+
+#### References
+
+- https://thoughtbot.com/blog/using-redux-with-react-hooks
+- https://react-redux.js.org/api/hooks
+
 
 ## Testing
 
@@ -386,6 +492,19 @@ Because most of the Redux code you write are functions, and many of them are pur
 - Best practices for testing with Redux
 	- https://willowtreeapps.com/ideas/best-practices-for-unit-testing-with-a-react-redux-approach
 	- https://jsramblings.com/3-ways-to-test-mapstatetoprops-and-mapdispatchtoprops/
+
+### Testing with Hooks
+
+- [react-hooks-testing-library](https://github.com/testing-library/react-hooks-testing-library) is a very used React hooks testing utilities.
+
+- When to use this library
+	- You're writing a library with one or more custom hooks that are not directly tied a component
+	- You have a complex hook that is difficult to test through component interactions
+- When not to use this library
+	- Your hook is defined alongside a component and is only used there
+	- Your hook is easy to test by just testing the components using it
+
+[Installation and Code samples](https://react-hooks-testing-library.com/)
 
 
 ## Redux
