@@ -364,9 +364,9 @@ ReactDOM.render(
 
 React Redux now includes its own useSelector and useDispatch Hooks that can be used instead of connect.
 
-- useSelector is analogous to connect’s mapStateToProps. You pass it a function that takes the Redux store state and returns the pieces of state you’re interested in.
+- useSelector is analogous to connect's mapStateToProps. You pass it a function that takes the Redux store state and returns the pieces of state you're interested in.
 
-- useDispatch replaces connect’s mapDispatchToProps but is lighter weight. All it does is return your store’s dispatch method so you can manually dispatch actions.
+- useDispatch replaces connect's mapDispatchToProps but is lighter weight. All it does is return your store's dispatch method so you can manually dispatch actions.
 
 Example using connect:
 
@@ -426,7 +426,7 @@ const { count, user } = useSelector(state => ({
 }));
 ```
 
-useSelector is returning a different object literal each time it’s called. When the store is updated, React Redux will run this selector, and since a new object was returned, always determine that the component needs to re-render, which isn’t what we want.
+useSelector is returning a different object literal each time it's called. When the store is updated, React Redux will run this selector, and since a new object was returned, always determine that the component needs to re-render, which isn't what we want.
 
 The simple rule to avoid this is to either call useSelector once for each value of your state that you need:
 
@@ -495,7 +495,9 @@ Because most of the Redux code you write are functions, and many of them are pur
 
 ### Testing with Hooks
 
-- [react-hooks-testing-library](https://github.com/testing-library/react-hooks-testing-library) is a very used React hooks testing utilities.
+#### Custom Hooks
+
+[react-hooks-testing-library](https://github.com/testing-library/react-hooks-testing-library) is a very used React hooks testing utilities.
 
 - When to use this library
 	- You're writing a library with one or more custom hooks that are not directly tied a component
@@ -505,6 +507,52 @@ Because most of the Redux code you write are functions, and many of them are pur
 	- Your hook is easy to test by just testing the components using it
 
 [Installation and Code samples](https://react-hooks-testing-library.com/)
+
+#### Function component
+
+react-hooks-testing-library is useful for testing custom hooks, in order to testing hooks inside a function component, a useful approach would be test the side effects simulating events like clicks.
+
+Example:
+
+```jsx
+it('should set the password value on change event with trim', () => {
+    container.find('input[type="password"]').simulate('change', {
+      target: {
+        value: 'somenewpassword  ',
+      },
+    });
+    expect(container.find('input[type="password"]').prop('value')).toEqual(
+      'somenewpassword',
+    );
+  });
+```
+
+An alternative to simulating events using simulate method is to execute the props by calling them as functions by passing in the necessary params. It is useful when we have a custom component with custom methods as props, in these cases the simulate method wouldn't work.
+
+```jsx
+container.find('input[type="password"]').prop('onChange')({
+  target: {
+    value: 'somenewpassword',
+  }
+});
+```
+
+> Alternatively, we could also mock the Hooks using Jest.
+
+##### Lifecycle hooks
+
+Lifecycle hooks such as useEffect aren't yet supported in shallow render (those hooks don't get called) so we need to use mount instead of shallow to test those components for now. Like with the useState hook we check for updates to props to test these hooks by simulating events or executing props as functions.
+
+##### Methods that don't update state
+
+The methods that don't manipulate the state can be refactored out of the component into a separate utils file and tested in it instead of having them inside the component. If the methods are pretty specific to the component and aren't shared outside the component we could have it inside the component file but outside the main function component.
+
+#### References
+
+- https://react-hooks-testing-library.com/
+- https://medium.com/@acesmndr/testing-react-functional-components-with-hooks-using-enzyme-f732124d320a
+- https://dev.to/theactualgivens/testing-react-hook-state-changes-2oga
+- https://medium.com/@pylnata/testing-react-functional-component-using-hooks-useeffect-usedispatch-and-useselector-in-shallow-9cfbc74f62fb
 
 
 ## Redux
