@@ -547,12 +547,145 @@ Lifecycle hooks such as useEffect aren't yet supported in shallow render (those 
 
 The methods that don't manipulate the state can be refactored out of the component into a separate utils file and tested in it instead of having them inside the component. If the methods are pretty specific to the component and aren't shared outside the component we could have it inside the component file but outside the main function component.
 
+#### Hooks from Redux
+
+There are 2 kinds of hooks you will encounter.
+
+- Separated custom hooks with / without jsx
+- Component with hooks inside
+
+And the essential concepts are: the first one is a unit test method, the 2nd solution is an integration test.
+
+##### How to test separated custom hooks
+
+Let's say you have a custom hook function:
+
+```jsx
+import { useSelector, useDispatch } from "react-redux";
+import { Selectors } from "./selectors";
+import { Actions } from "./actions";
+
+export const useReset = () => {
+  const totalCost = useSelector(Selectors.totalCost);
+  const dispatch = useDispatch();
+
+  return () => {
+    if (totalCost > 0) {
+      dispatch(Actions.reset());
+    }
+  };
+};
+```
+
+It is simple, we will dispatch Actions.reset() when totalCost is greater than 0.
+
+For the testing this, you can simply monkeypatch all the methods that you are using here in terms of changing the behavior when testing.
+
+```jsx
+import { useReset } from "./useReset";
+import { Selectors } from "./selectors";
+import { Actions } from "./actions";
+
+jest.mock("react-redux", () => ({
+  useSelector: jest.fn(fn => fn()),
+  useDispatch: () => jest.fn()
+}));
+
+const setup = ({ totalCost }) => {
+  jest.spyOn(Selectors, "totalCost").mockReturnValue(totalCost);
+  jest.spyOn(Actions, "reset");
+};
+
+describe("useReset", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("Success Case", () => {
+    setup({ totalCost: 1 });
+
+    const resetFunc = useReset();
+    resetFunc();
+
+    expect(Actions.reset).toHaveBeenCalledTimes(1);
+  });
+
+  test("Failure Case", () => {
+    setup({ totalCost: 0 });
+
+    const resetFunc = useReset();
+    resetFunc();
+
+    expect(Actions.reset).toHaveBeenCalledTimes(0);
+  });
+});
+```
+
+##### How to test component with hooks inside
+
+In this case, you can simply create a fake store <Provider> from the lib redux-mock-store, and use it to wrap your component, so every test is more like an integration test involved not only the Components but the selectors as well.
+
+[redux-mock-store](https://github.com/reduxjs/redux-mock-store)
+
+```jsx
+import React from 'react';
+import { mount } from 'enzyme';
+import configureStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
+
+import Header from '../../components/Header';
+import { addTodo } from '../../store/actions/todos';
+
+const middlewares = [];
+const mockStore = configureStore(middlewares);
+const initialState = { };
+const store = mockStore(initialState);
+const wrapper = mount(
+  <Provider store={store}>
+    <Header />
+  </Provider>,
+);
+
+describe('Header component', () => {
+  it('should render without crashing', () => {
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should change the state', () => {
+    const input = 'Input example';
+    wrapper.find('[id="textInput"]').first().simulate('change', { target: { value: input } });
+    expect(wrapper.find('[id="textInput"]').first().prop('value')).toEqual(input);
+  });
+
+  it('should add a new todo', () => {
+    const input = 'Input example';
+    wrapper.find('[id="textInput"]').first().simulate('change', { target: { value: input } });
+    wrapper.find('[id="addForm"]').first().simulate('submit', {
+      preventDefault: jest.fn(),
+      target: { value: input },
+    });
+    const actions = store.getActions();
+    const text = input.trim();
+    const expectedPayload = addTodo(text);
+    expect(actions).toEqual([expectedPayload]);
+    store.clearActions();
+    expect(wrapper.find('[id="textInput"]').first().prop('value')).toEqual('');
+  });
+});
+```
+
 #### References
 
 - https://react-hooks-testing-library.com/
 - https://medium.com/@acesmndr/testing-react-functional-components-with-hooks-using-enzyme-f732124d320a
 - https://dev.to/theactualgivens/testing-react-hook-state-changes-2oga
 - https://medium.com/@pylnata/testing-react-functional-component-using-hooks-useeffect-usedispatch-and-useselector-in-shallow-9cfbc74f62fb
+- https://www.albertgao.xyz/2019/11/05/how-to-test-react-redux-hooks-via-jest/
+- https://github.com/reduxjs/redux-mock-store
 
 
 ## Redux
