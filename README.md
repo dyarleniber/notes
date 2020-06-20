@@ -17,4 +17,4 @@ A place to take notes, and keep track of my thoughts and ideas. All organized by
 - [React](react/README.md)
 - [SQL](sql/README.md)
 - [System design](system-design/README.md)
-- [The Complete Junior to Senior Web Developer Roadmap 2020 Course](the-complete-junior-to-senior/README.md)
+- [The Complete Junior to Senior Web Developer Roadmap 2020 Course](the-complete-junior-to-senior-web-developer-roadmap-2020/README.md)
