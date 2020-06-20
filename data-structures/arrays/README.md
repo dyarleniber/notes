@@ -1,3 +1,5 @@
+[Back](../README.md)
+
 ## Arrays
 
 Arrays, which are sometimes called Lists, organizes items sequentially. That means one after another in memory. An array is the simplest and most widely used data structure. Other data structures like stacks and queues are derived from arrays.

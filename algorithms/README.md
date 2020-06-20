@@ -1,3 +1,5 @@
+[Back](../README.md)
+
 # Algorithms
 
 ## Algorithms (Most used)
