@@ -86,4 +86,6 @@ Next, the rest of your HTML code needs to be wrapped in html tags. The opening `
 </html>
 ```
 
+- [HTML5 new elements](http://w3schools-fa.ir/html/html5_new_elements.html)
+
 - [HTML5 professional boilerplate](https://github.com/h5bp/html5-boilerplate)
