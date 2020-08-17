@@ -59,7 +59,7 @@ For instance, you can use `background-color: rgba(45, 45, 45, 0.1)`. It produces
 
 The font size of header tags (`h1` through `h6`) should generally be larger than the font size of paragraph tags. This makes it easier for the user to visually understand the layout and level of importance of everything on the page. You can also use the `font-size` property to adjust the size of the text in an element.
 
-## Add a box-shadow to a Card-like ElementPassed
+## Add a box-shadow to a Card-like Element
 
 The `box-shadow` property applies one or more shadows to an element.
 
