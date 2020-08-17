@@ -12,6 +12,7 @@ A place to take notes, and keep track of my thoughts and ideas. All organized by
 - [Go](go/README.md)
 - [HTML and CSS](html-css/README.md)
 - [Interview](interview/README.md)
+- [Laravel](laravel/README.md)
 - [Linux](linux/README.md)
 - [Node.js](node.js/README.md)
 - [PHP](php/README.md)
