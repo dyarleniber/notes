@@ -270,3 +270,296 @@ $name = Route::currentRouteName();
 
 $action = Route::currentRouteAction();
 ```
+
+
+## Middleware
+
+Middleware provide a convenient mechanism for filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
+
+All of these middleware are located in the `app/Http/Middleware` directory.
+
+To create a new middleware, use the `make:middleware` Artisan command:
+
+```bash
+php artisan make:middleware CheckAge
+```
+
+This command will place a new `CheckAge` class within your `app/Http/Middleware` directory.
+
+In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the `home` URI:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class CheckAge
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        if ($request->age <= 200) {
+            return redirect('home');
+        }
+
+        return $next($request);
+    }
+}
+```
+
+Additional middleware parameters will be passed to the middleware after the `$next` argument:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class CheckRole
+{
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $role
+     * @return mixed
+     */
+    public function handle($request, Closure $next, $role)
+    {
+        if (! $request->user()->hasRole($role)) {
+            // Redirect...
+        }
+
+        return $next($request);
+    }
+
+}
+```
+
+Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+
+```php
+Route::put('post/{id}', function ($id) {
+    //
+})->middleware('role:editor');
+```
+
+> All middleware are resolved via the service container, so you may type-hint any dependencies you need within a middleware's constructor.
+
+> If you want a middleware to run during every HTTP request to your application, list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
+
+> If you would like to assign middleware to specific routes, you should first assign the middleware a key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, append it to this list and assign it a key of your choosing.
+
+```php
+protected $routeMiddleware = [
+    'auth' => \App\Http\Middleware\Authenticate::class,
+    'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+    'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+    'can' => \Illuminate\Auth\Middleware\Authorize::class,
+    'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+    'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+    'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+];
+```
+
+> Once the middleware has been defined in the HTTP kernel, you may use the `middleware` method to assign middleware to a route:
+
+Examples:
+
+```php
+
+Route::get('admin/profile', function () {
+    //
+})->middleware('auth');
+
+
+Route::get('/', function () {
+    //
+})->middleware('first', 'second');
+
+
+use App\Http\Middleware\CheckAge;
+
+Route::get('admin/profile', function () {
+    //
+})->middleware(CheckAge::class);
+
+
+use App\Http\Middleware\CheckAge;
+
+Route::middleware([CheckAge::class])->group(function () {
+    Route::get('/', function () {
+        //
+    });
+
+    Route::get('admin/profile', function () {
+        //
+    })->withoutMiddleware([CheckAge::class]);
+});
+
+
+Route::get('/', function () {
+    //
+})->middleware('web');
+
+
+Route::group(['middleware' => ['web']], function () {
+    //
+});
+
+
+Route::middleware(['web', 'subscribed'])->group(function () {
+    //
+});
+
+```
+
+> Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may do this using the `$middlewareGroups` property of your HTTP kernel. Out of the box, Laravel comes with `web` and `api` middleware groups that contain common middleware you may want to apply to your web UI and API routes.
+> Out of the box, the `web` middleware group is automatically applied to your `routes/web.php` file by the `RouteServiceProvider`.
+
+```php
+/**
+ * The application's route middleware groups.
+ *
+ * @var array
+ */
+protected $middlewareGroups = [
+    'web' => [
+        \App\Http\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\VerifyCsrfToken::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    ],
+
+    'api' => [
+        'throttle:60,1',
+        'auth:api',
+    ],
+];
+```
+
+> Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In this case, you may specify your middleware priority using the `$middlewarePriority` property of your `app/Http/Kernel.php` file.
+
+```php
+/**
+ * The priority-sorted list of middleware.
+ *
+ * This forces non-global middleware to always be in the given order.
+ *
+ * @var array
+ */
+protected $middlewarePriority = [
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+    \Illuminate\Routing\Middleware\ThrottleRequests::class,
+    \Illuminate\Session\Middleware\AuthenticateSession::class,
+    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    \Illuminate\Auth\Middleware\Authorize::class,
+];
+```
+
+>Terminable Middleware
+>Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using FastCGI, the `terminate` method will automatically be called after the response is sent to the browser.
+
+
+## CSRF Protection
+
+Laravel makes it easy to protect your application from cross-site request forgery (CSRF) attacks. Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user.
+
+Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
+
+Anytime you define an HTML form in your application, you should include a hidden CSRF token field in the form so that the CSRF protection middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+
+```php
+<form method="POST" action="/profile">
+    @csrf
+    ...
+</form>
+```
+
+The `VerifyCsrfToken` middleware, which is included in the `web` middleware group, will automatically verify that the token in the request input matches the token stored in the session.
+
+> When building JavaScript driven applications, it is convenient to have your JavaScript HTTP library automatically attach the CSRF token to every outgoing request. By default, the Axios HTTP library provided in the `resources/js/bootstrap.js` file automatically sends an `X-XSRF-TOKEN` header using the value of the encrypted `XSRF-TOKEN` cookie. If you are not using this library, you will need to manually configure this behavior for your application.
+
+### Excluding URIs From CSRF Protection
+
+Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using Stripe to process payments and are utilizing their webhook system, you will need to exclude your Stripe webhook handler route from CSRF protection since Stripe will not know what CSRF token to send to your routes.
+
+Typically, you should place these kinds of routes outside of the `web` middleware group that the `RouteServiceProvider` applies to all routes in the `routes/web.php` file. However, you may also exclude the routes by adding their URIs to the `$except` property of the `VerifyCsrfToken` middleware:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+
+class VerifyCsrfToken extends Middleware
+{
+    /**
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
+     */
+    protected $except = [
+        'stripe/*',
+        'http://example.com/foo/bar',
+        'http://example.com/foo/*',
+    ];
+}
+```
+
+> The CSRF middleware is automatically disabled when running tests.
+
+### X-CSRF-Token
+
+In addition to checking for the CSRF token as a POST parameter, the `VerifyCsrfToken` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in an HTML `meta` tag:
+
+```html
+<meta name="csrf-token" content="{{ csrf_token() }}">
+```
+
+Then, once you have created the `meta` tag, you can instruct a library like jQuery to automatically add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications:
+
+```javascript
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+```
+
+### X-XSRF-Token
+
+Laravel stores the current CSRF token in an encrypted `XSRF-TOKEN` cookie that is included with each response generated by the framework. You can use the cookie value to set the `X-XSRF-TOKEN` request header.
+
+This cookie is primarily sent as a convenience since some JavaScript frameworks and libraries, like Angular and Axios, automatically place its value in the `X-XSRF-TOKEN` header on same-origin requests.
+
+> By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send this for you.
+
+
+## Controllers
+## Requests
+## Responses
+## Views
+## URL Generation
+## Session
+## Validation
+## Error Handling
+## Logging
+
