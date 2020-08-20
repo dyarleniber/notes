@@ -12,4 +12,6 @@ Quando você consegue sua Certificação em publicidade em vídeo do Google Ads,
 - usar estratégias criativas para contar histórias eficientes sobre a marca no YouTube e atrair a atenção do seu público;
 - usar o YouTube para gerar respostas diretas.
 
+Estude sobre publicidade em vídeo do Google Ads
+
 - [Descubra o valor do YouTube](descubra-o-valor-do-youtube/README.md)
