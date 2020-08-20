@@ -10,6 +10,7 @@ A place to take notes, and keep track of my thoughts and ideas. All organized by
 - [English](english/README.md)
 - [Freelancer and Remote work](freelancer-and-remote-work/README.md)
 - [Go](go/README.md)
+- [Google](google/README.md)
 - [HTML and CSS](html-css/README.md)
 - [Interview](interview/README.md)
 - [Laravel](laravel/README.md)
