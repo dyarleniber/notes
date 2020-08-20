@@ -460,6 +460,331 @@ class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
 
 ## Facades
 
+Facades provide a "static" interface to classes that are available in the application's service container. Laravel ships with many facades which provide access to almost all of Laravel's features.
+
+Laravel facades serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+
+All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
+
+Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+Route::get('/cache', function () {
+    return Cache::get('key');
+});
+```
+
+If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+
+> Some care must be taken when using facades. The primary danger of facades is class scope creep. Since facades are so easy to use and do not require injection, it can be easy to let your classes continue to grow and use many facades in a single class. Using dependency injection, this potential is mitigated by the visual feedback a large constructor gives you that your class is growing too large. So, when using facades, pay special attention to the size of your class so that its scope of responsibility stays narrow.
+
+Typically, it would not be possible to mock or stub a truly static class method. However, since facades use dynamic methods to proxy method calls to objects resolved from the service container, we actually can test facades just as we would test an injected class instance. For example, given the following route:
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+Route::get('/cache', function () {
+    return Cache::get('key');
+});
+```
+
+We can write the following test to verify that the Cache::get method was called with the argument we expected:
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+/**
+ * A basic functional test example.
+ *
+ * @return void
+ */
+public function testBasicExample()
+{
+    Cache::shouldReceive('get')
+         ->with('key')
+         ->andReturn('value');
+
+    $this->visit('/cache')
+         ->see('value');
+}
+```
+
+In addition to facades, Laravel includes a variety of "helper" functions. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
+
+```php
+return View::make('profile');
+
+return view('profile');
+```
+
+There is absolutely no practical difference between facades and helper functions. When using helper functions, you may still test them exactly as you would the corresponding facade. For example, given the following route:
+
+```php
+Route::get('/cache', function () {
+    return cache('key');
+});
+```
+
+Under the hood, the `cache` helper is going to call the `get` method on the class underlying the `Cache` facade. So, we can write the following test:
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+/**
+ * A basic functional test example.
+ *
+ * @return void
+ */
+public function testBasicExample()
+{
+    Cache::shouldReceive('get')
+         ->with('key')
+         ->andReturn('value');
+
+    $this->visit('/cache')
+         ->see('value');
+}
+```
+
+### Real-Time Facades
+
+Using real-time facades, you may treat any class in your application as if it were a facade.
+
+For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:
+
+```php
+<?php
+
+namespace App;
+
+use App\Contracts\Publisher;
+use Illuminate\Database\Eloquent\Model;
+
+class Podcast extends Model
+{
+    /**
+     * Publish the podcast.
+     *
+     * @param  Publisher  $publisher
+     * @return void
+     */
+    public function publish(Publisher $publisher)
+    {
+        $this->update(['publishing' => now()]);
+
+        $publisher->publish($this);
+    }
+}
+```
+
+To generate a real-time facade, prefix the namespace of the imported class with `Facades`:
+
+```php
+<?php
+
+namespace App;
+
+use Facades\App\Contracts\Publisher;
+use Illuminate\Database\Eloquent\Model;
+
+class Podcast extends Model
+{
+    /**
+     * Publish the podcast.
+     *
+     * @return void
+     */
+    public function publish()
+    {
+        $this->update(['publishing' => now()]);
+
+        Publisher::publish($this);
+    }
+}
+```
+
+When the real-time facade is used, the publisher implementation will be resolved out of the service container using the portion of the interface or class name that appears after the `Facades`.
+
+When testing, we can use Laravel's built-in facade testing helpers to mock this method call.
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use App\Podcast;
+use Facades\App\Contracts\Publisher;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class PodcastTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * A test example.
+     *
+     * @return void
+     */
+    public function test_podcast_can_be_published()
+    {
+        $podcast = factory(Podcast::class)->create();
+
+        Publisher::shouldReceive('publish')->once()->with($podcast);
+
+        $podcast->publish();
+    }
+}
+```
+
 
 ## Contracts
 
+Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending e-mail.
+
+Each contract has a corresponding implementation provided by the framework
+
+All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts).
+
+### Contracts Vs. Facades and When To Use Contracts
+
+Laravel's facades and helper functions provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. In most cases, each facade has an equivalent contract.
+
+Unlike facades, which do not require you to require them in your class' constructor, contracts allow you to define explicit dependencies for your classes. Some developers prefer to explicitly define their dependencies in this way and therefore prefer to use contracts, while other developers enjoy the convenience of facades.
+
+Let's distill the reasons for using interfaces to the following headings: **loose coupling** and **simplicity**.
+
+#### Loose Coupling
+
+First, let's review some code that is tightly coupled to a cache implementation. Consider the following
+
+```php
+<?php
+
+namespace App\Orders;
+
+class Repository
+{
+    /**
+     * The cache instance.
+     */
+    protected $cache;
+
+    /**
+     * Create a new repository instance.
+     *
+     * @param  \SomePackage\Cache\Memcached  $cache
+     * @return void
+     */
+    public function __construct(\SomePackage\Cache\Memcached $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * Retrieve an Order by ID.
+     *
+     * @param  int  $id
+     * @return Order
+     */
+    public function find($id)
+    {
+        if ($this->cache->has($id)) {
+            //
+        }
+    }
+}
+```
+
+In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete Cache class from a package vendor. If the API of that package changes our code must change as well.
+
+Likewise, if we want to replace our underlying cache technology (Memcached) with another technology (Redis), we again will have to modify our repository. Our repository should not have so much knowledge regarding who is providing them data or how they are providing it.
+
+**Instead of this approach, we can improve our code by depending on a simple, vendor agnostic interface**:
+
+```php
+<?php
+
+namespace App\Orders;
+
+use Illuminate\Contracts\Cache\Repository as Cache;
+
+class Repository
+{
+    /**
+     * The cache instance.
+     */
+    protected $cache;
+
+    /**
+     * Create a new repository instance.
+     *
+     * @param  Cache  $cache
+     * @return void
+     */
+    public function __construct(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+}
+```
+
+Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
+
+#### Simplicity
+
+When all of Laravel's services are neatly defined within simple interfaces, it is very easy to determine the functionality offered by a given service. **The contracts serve as succinct documentation to the framework's features**.
+
+In addition, when you depend on simple interfaces, your code is easier to understand and maintain. Rather than tracking down which methods are available to you within a large, complicated class, you can refer to a simple, clean interface.
+
+### How To Use Contracts
+
+So, how do you get an implementation of a contract? It's actually quite simple.
+
+Many types of classes in Laravel are resolved through the service container, including controllers, event listeners, middleware, queued jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+
+For example, take a look at this event listener:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderWasPlaced;
+use App\User;
+use Illuminate\Contracts\Redis\Factory;
+
+class CacheOrderInformation
+{
+    /**
+     * The Redis factory implementation.
+     */
+    protected $redis;
+
+    /**
+     * Create a new event handler instance.
+     *
+     * @param  Factory  $redis
+     * @return void
+     */
+    public function __construct(Factory $redis)
+    {
+        $this->redis = $redis;
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  OrderWasPlaced  $event
+     * @return void
+     */
+    public function handle(OrderWasPlaced $event)
+    {
+        //
+    }
+}
+```
+
+When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value.
