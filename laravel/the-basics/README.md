@@ -554,7 +554,460 @@ This cookie is primarily sent as a convenience since some JavaScript frameworks 
 
 
 ## Controllers
-## Requests
+
+Instead of defining all of your request handling logic as Closures in route files, you may wish to organize this behavior using Controller classes. Controllers can group related request handling logic into a single class. Controllers are stored in the `app/Http/Controllers` directory.
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\User;
+
+class UserController extends Controller
+{
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('log')->only('index');
+
+        $this->middleware('subscribed')->except('store');
+    }
+
+    /**
+     * Show the profile for the given user.
+     *
+     * @param  int  $id
+     * @return View
+     */
+    public function show($id)
+    {
+        return view('user.profile', ['user' => User::findOrFail($id)]);
+    }
+}
+```
+
+> Controllers are not required to extend a base class. However, you will not have access to convenience features such as the `middleware`, `validate`, and `dispatch` methods.
+
+You can define a route to this controller action like so:
+
+```php
+Route::get('user/{id}', 'UserController@show');
+```
+
+> The `RouteServiceProvider` loads your route files within a route group that contains the namespace.
+> If you choose to nest your controllers deeper into the `App\Http\Controllers` directory, use the specific class name relative to the `App\Http\Controllers` root namespace.
+
+```php
+Route::get('foo', 'Photos\AdminController@method');
+```
+
+### Single Action Controllers
+
+If you would like to define a controller that only handles a single action, you may place a single `__invoke` method on the controller:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\User;
+
+class ShowProfile extends Controller
+{
+    /**
+     * Show the profile for the given user.
+     *
+     * @param  int  $id
+     * @return View
+     */
+    public function __invoke($id)
+    {
+        return view('user.profile', ['user' => User::findOrFail($id)]);
+    }
+}
+```
+
+When registering routes for single action controllers, you do not need to specify a method:
+
+```php
+Route::get('user/{id}', 'ShowProfile');
+```
+
+You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
+
+```bash
+php artisan make:controller ShowProfile --invokable
+```
+
+### Resource Controllers
+
+Laravel resource routing assigns the typical "CRUD" routes to a controller with a single line of code. For example, you may wish to create a controller that handles all HTTP requests for "photos" stored by your application. Using the `make:controller` Artisan command, we can quickly create such a controller:
+
+```bash
+php artisan make:controller PhotoController --resource
+```
+
+This command will generate a controller at app/Http/Controllers/PhotoController.php. The controller will contain a method for each of the available resource operations.
+
+Next, you may register a resourceful route to the controller:
+
+```php
+Route::resource('photos', 'PhotoController');
+```
+
+This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions, including notes informing you of the HTTP verbs and URIs they handle.
+
+If you are using route model binding and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
+
+```bash
+php artisan make:controller PhotoController --resource --model=Photo
+```
+
+When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates.
+
+For convenience, you may use the apiResource method to automatically exclude these two routes:
+
+```php
+Route::apiResource('photos', 'PhotoController');
+```
+
+### Dependency Injection & Controllers
+
+The Laravel service container is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance.
+
+In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods.
+
+If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:
+
+```php
+Route::put('user/{id}', 'UserController@update');
+```
+
+You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method.
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    /**
+     * Update the given user.
+     *
+     * @param  Request  $request
+     * @param  string  $id
+     * @return Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+}
+```
+
+### Route Caching
+
+> Closure based routes cannot be cached. To use route caching, you must convert any Closure routes to controller classes.
+
+If your application is exclusively using controller based routes, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. In some cases, your route registration may even be up to 100x faster. To generate a route cache, just execute the `route:cache` Artisan command:
+
+```bash
+php artisan route:cache
+```
+
+After running this command, your cached routes file will be loaded on every request. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
+
+You may use the `route:clear` command to clear the route cache:
+
+```php
+php artisan route:clear
+```
+
+
+## HTTP Requests
+
+To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your controller method. The incoming request instance will automatically be injected by the service container.
+
+You may also type-hint the `Illuminate\Http\Request` class on a route Closure. The service container will automatically inject the incoming request into the Closure when it is executed.
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/', function (Request $request) {
+    //
+});
+```
+
+The `Illuminate\Http\Request` instance provides a variety of methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class.
+
+> By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
+
+Examples:
+
+```php
+
+// Retrieving The Request Path
+// If the incoming request is targeted at http://domain.com/foo/bar, the path method will return foo/bar
+$uri = $request->path();
+
+// The is method allows you to verify that the incoming request path matches a given pattern. You may use the * character as a wildcard when utilizing this method.
+if ($request->is('admin/*')) {
+    //
+}
+
+// Retrieving The Request URL Without Query String...
+$url = $request->url();
+
+// Retrieving The Request URL With Query String...
+$url = $request->fullUrl();
+
+// Retrieving The Request Method
+$method = $request->method();
+
+// Verify that the HTTP verb matches a given string.
+if ($request->isMethod('post')) {
+    //
+}
+
+// Retrieve all of the input data as an array.
+$input = $request->all();
+
+// Retrieving An Input Value regardless of the HTTP verb.
+$name = $request->input('name');
+
+// You may pass a default value as the second argument to the input method.
+$name = $request->input('name', 'Sally');
+
+// When working with forms that contain array inputs, use "dot" notation to access the arrays.
+$name = $request->input('products.0.name');
+$names = $request->input('products.*.name');
+
+// You may call the input method without any arguments in order to retrieve all of the input values as an associative array.
+$input = $request->input();
+
+// Retrieving Input only From The Query String
+$name = $request->query('name');
+$name = $request->query('name', 'Helen');
+$query = $request->query();
+
+// Retrieving Input Via Dynamic Properties
+// When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the route parameters.
+$name = $request->name;
+
+// Retrieving JSON Input Values
+// When sending JSON requests to your application, you may access the JSON data via the input method as long as the Content-Type header of the request is properly set to application/json.
+// You may even use "dot" syntax to dig into JSON arrays.
+$name = $request->input('user.name');
+
+// Retrieving Boolean Input Values
+// When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on".
+// For convenience, you may use the boolean method to retrieve these values as booleans.
+// The boolean method returns true for 1, "1", true, "true", "on", and "yes". All other values will return false.
+$archived = $request->boolean('archived');
+
+// Retrieving A Portion Of The Input Data
+$input = $request->only(['username', 'password']);
+$input = $request->only('username', 'password');
+$input = $request->except(['credit_card']);
+$input = $request->except('credit_card');
+
+// Determining If An Input Value Is Present
+if ($request->has('name')) {
+    //
+}
+if ($request->has(['name', 'email'])) {
+    //
+}
+if ($request->hasAny(['name', 'email'])) {
+    //
+}
+if ($request->filled('name')) {
+    //
+}
+if ($request->missing('name')) {
+    //
+}
+
+```
+
+### Old Input
+
+Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included validation features, it is unlikely you will need to manually use these methods, as some of Laravel's built-in validation facilities will call them automatically.
+
+```php
+
+// Flashing Input To The Session
+// The flash method on the Illuminate\Http\Request class will flash the current input to the session so that it is available during the user's next request to the application.
+$request->flash();
+
+// You may also use the flashOnly and flashExcept methods to flash a subset of the request data to the session.
+// These methods are useful for keeping sensitive information such as passwords out of the session.
+$request->flashOnly(['username', 'email']);
+$request->flashExcept('password');
+
+// Flashing Input Then Redirecting
+return redirect('form')->withInput();
+return redirect('form')->withInput(
+    $request->except('password')
+);
+
+// Retrieving Old Input
+$username = $request->old('username');
+
+```
+
+Laravel also provides a global `old` helper. If you are displaying old input within a Blade template.
+
+```html
+<input type="text" name="username" value="{{ old('username') }}">
+```
+
+### Cookies
+
+All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on a `Illuminate\Http\Request` instance.
+
+```php
+$value = $request->cookie('name');
+
+// Alternatively, you may use the Cookie facade to access cookie values.
+use Illuminate\Support\Facades\Cookie;
+
+$value = Cookie::get('name');
+```
+
+You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method.
+
+```php
+return response('Hello World')->cookie(
+    'name', 'value', $minutes
+);
+```
+
+### Retrieving Uploaded Files
+
+You may access uploaded files from a `Illuminate\Http\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\Http\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file.
+
+```php
+$file = $request->file('photo');
+
+$file = $request->photo;
+
+if ($request->hasFile('photo')) {
+    //
+}
+
+// Validating Successful Uploads
+if ($request->file('photo')->isValid()) {
+    //
+}
+
+// File Paths & Extensions
+$path = $request->photo->path();
+$extension = $request->photo->extension();
+```
+
+To store an uploaded file, you will typically use one of your configured filesystems. The `UploadedFile` class has a `store` method which will move an uploaded file to one of your disks, which may be a location on your local filesystem or even a cloud storage location like Amazon S3.
+
+The `store` method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a file name, since a unique ID will automatically be generated to serve as the file name.
+
+The `store` method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root.
+
+```php
+$path = $request->photo->store('images');
+
+$path = $request->photo->store('images', 's3');
+```
+
+If you do not want a file name to be automatically generated, you may use the `storeAs` method, which accepts the path, file name, and disk name as its arguments.
+
+```php
+$path = $request->photo->storeAs('images', 'filename.jpg');
+
+$path = $request->photo->storeAs('images', 'filename.jpg', 's3');
+```
+
+### PSR-7 Requests
+
+The PSR-7 standard specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the Symfony HTTP Message Bridge component to convert typical Laravel requests and responses into PSR-7 compatible implementations.
+
+```bash
+composer require symfony/psr-http-message-bridge
+composer require nyholm/psr7
+```
+
+Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route Closure or controller method.
+
+```php
+use Psr\Http\Message\ServerRequestInterface;
+
+Route::get('/', function (ServerRequestInterface $request) {
+    //
+});
+```
+
+> If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
+
+### Configuring Trusted Proxies
+
+When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
+
+To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted.
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Fideloper\Proxy\TrustProxies as Middleware;
+use Illuminate\Http\Request;
+
+class TrustProxies extends Middleware
+{
+    /**
+     * The trusted proxies for this application.
+     *
+     * @var string|array
+     */
+    protected $proxies = [
+        '192.168.1.1',
+        '192.168.1.2',
+    ];
+
+    /**
+     * The headers that should be used to detect proxies.
+     *
+     * @var int
+     */
+    protected $headers = Request::HEADER_X_FORWARDED_ALL;
+}
+```
+
+> If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on trusting proxies.
+
+If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies.
+
+```php
+/**
+ * The trusted proxies for this application.
+ *
+ * @var string|array
+ */
+protected $proxies = '*';
+```
+
+
 ## Responses
 ## Views
 ## URL Generation
@@ -562,4 +1015,3 @@ This cookie is primarily sent as a convenience since some JavaScript frameworks 
 ## Validation
 ## Error Handling
 ## Logging
-
