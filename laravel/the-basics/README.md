@@ -1628,6 +1628,72 @@ public function store(StoreBlogPost $request)
 
 > Through Form Request Validation you can: Creating Form Requests, Authorizing Form Requests, Customizing The Error Messages, Customizing The Validation Attributes and Prepare Input For Validation (sanitize data).
 
+### Manually Creating Validators
+
+You may create a validator instance manually.
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class PostController extends Controller
+{
+    /**
+     * Store a new blog post.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('post/create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        // Store the blog post...
+    }
+}
+```
+
+### Named Error Bags
+
+If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Pass a name as the second argument to `withErrors`.
+
+```php
+return redirect('register')
+            ->withErrors($validator, 'login');
+```
+
+You may then access the named `MessageBag` instance from the `$errors` variable.
+
+```php
+{{ $errors->login->first('email') }}
+```
+
 
 ## Error Handling
+
+When you start a new Laravel project, error and exception handling is already configured for you. The `App\Exceptions\Handler` class is where all exceptions triggered by your application are logged and then rendered back to the user.
+
+> The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable.
+
+
 ## Logging
+
+To help you learn more about what's happening within your application, Laravel provides robust logging services that allow you to log messages to files, the system error log, and even to Slack to notify your entire team.
+
+Under the hood, Laravel utilizes the Monolog library, which provides support for a variety of powerful log handlers. Laravel makes it a cinch to configure these handlers, allowing you to mix and match them to customize your application's log handling.
+
+> All of the configuration for your application's logging system is housed in the `config/logging.php` configuration file.
