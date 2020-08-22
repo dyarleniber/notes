@@ -1224,7 +1224,410 @@ php artisan view:clear
 
 
 ## URL Generation
-## Session
+
+Laravel provides several helpers to assist you in generating URLs for your application. These are mainly helpful when building links in your templates and API responses, or when generating redirect responses to another part of your application.
+
+```php
+
+// Generating Basic URLs
+// If no path is provided to the url helper, a Illuminate\Routing\UrlGenerator
+
+$post = App\Post::find(1);
+
+echo url("/posts/{$post->id}"); // http://example.com/posts/1
+
+// Accessing The Current URL
+
+// Get the current URL without the query string...
+echo url()->current();
+
+// Get the current URL including the query string...
+echo url()->full();
+
+// Get the full URL for the previous request...
+echo url()->previous();
+
+// Each of these methods may also be accessed via the URL facade
+
+use Illuminate\Support\Facades\URL;
+
+echo URL::current();
+
+// URLs For Named Routes
+
+echo route('post.show', ['post' => 1]); // http://example.com/post/1
+
+echo route('comment.show', ['post' => 1, 'comment' => 3]);
+
+// You will often be generating URLs using the primary key of Eloquent models. For this reason, you may pass Eloquent models as parameter values. The route helper will automatically extract the model's primary key.
+echo route('post.show', ['post' => $post]);
+
+// URLs For Controller Actions
+
+$url = action('HomeController@index');
+
+$url = action('UserController@profile', ['id' => 1]);
+
+use App\Http\Controllers\HomeController;
+
+$url = action([HomeController::class, 'index']);
+
+```
+
+### Signed URLs
+
+Laravel allows you to easily create "signed" URLs to named routes. These URLs have a "signature" hash appended to the query string which allows Laravel to verify that the URL has not been modified since it was created. Signed URLs are especially useful for routes that are publicly accessible yet need a layer of protection against URL manipulation.
+
+For example, you might use signed URLs to implement a public "unsubscribe" link that is emailed to your customers. To create a signed URL to a named route, use the `signedRoute` method of the `URL` facade:
+
+```php
+use Illuminate\Support\Facades\URL;
+
+return URL::signedRoute('unsubscribe', ['user' => 1]);
+```
+
+To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Request`.
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/unsubscribe/{user}', function (Request $request) {
+    if (! $request->hasValidSignature()) {
+        abort(401);
+    }
+
+    // ...
+})->name('unsubscribe');
+```
+
+> Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array.
+
+### Default Values
+
+For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter.
+
+```php
+Route::get('/{locale}/posts', function () {
+    //
+})->name('post.index');
+```
+
+It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a route middleware so that you have access to the current request.
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\URL;
+
+class SetDefaultLocaleForUrls
+{
+    public function handle($request, Closure $next)
+    {
+        URL::defaults(['locale' => $request->user()->locale]);
+
+        return $next($request);
+    }
+}
+```
+
+> Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper.
+
+
+## HTTP Session
+
+Since HTTP driven applications are stateless, sessions provide a way to store information about the user across multiple requests. Laravel ships with a variety of session backends that are accessed through an expressive, unified API. Support for popular backends such as Memcached, Redis, and databases is included out of the box.
+
+The session configuration file is stored at `config/session.php`.
+
+> By default, Laravel is configured to use the `file` session driver, which will work well for many applications.
+
+The session `driver` configuration option defines where session data will be stored for each request. Laravel ships with several great drivers out of the box.
+
+- `file` - sessions are stored in `storage/framework/sessions`.
+- `cookie` - sessions are stored in secure, encrypted cookies.
+- `database` - sessions are stored in a relational database.
+- `memcached` / `redis` - sessions are stored in one of these fast, cache based stores.
+- `array` - sessions are stored in a PHP array and will not be persisted.
+
+> The array driver is used during testing and prevents the data stored in the session from being persisted.
+
+> When using the `database` session driver, you will need to create a table to contain the session items.
+
+> You may use the `session:table` Artisan command to generate this migration.
+
+```bash
+php artisan session:table
+
+php artisan migrate
+```
+
+> Before using Redis sessions with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (`~1.0`) via Composer.
+
+> In the `session` configuration file, the `connection` option may be used to specify which Redis connection is used by the session.
+
+### Using The Session
+
+There are two primary ways of working with session data in Laravel: the global `session` helper and via a `Request` instance.
+
+```php
+
+// Retrieve a piece of data from the session...
+$value = session('key');
+
+// Specifying a default value...
+$value = session('key', 'default');
+
+// Store a piece of data in the session...
+session(['key' => 'value']);
+
+$value = $request->session()->get('key');
+
+$value = $request->session()->get('key', 'default');
+
+$value = $request->session()->get('key', function () {
+    return 'default';
+});
+
+// Retrieving All Session Data
+$data = $request->session()->all();
+
+// Determining If An Item Exists In The Session
+if ($request->session()->has('users')) {
+    //
+}
+
+// If its value is null, you may use the exists method. The exists method returns true if the item is present.
+if ($request->session()->exists('users')) {
+    //
+}
+
+// Storing Data
+
+// Via a request instance...
+$request->session()->put('key', 'value');
+
+// Via the global helper...
+session(['key' => 'value']);
+
+// Pushing To Array Session Values
+// The push method may be used to push a new value onto a session value that is an array.
+$request->session()->push('user.teams', 'developers');
+
+// Retrieving & Deleting An Item
+$value = $request->session()->pull('key', 'default');
+
+// Flash Data
+
+// Sometimes you may wish to store items in the session only for the next request. You may do so using the flash method.
+$request->session()->flash('status', 'Task was successful!');
+
+// It will keep all of the flash data for an additional request.
+$request->session()->reflash();
+
+// If you only need to keep specific flash data, you may use the keep method.
+$request->session()->keep(['username', 'email']);
+
+// Deleting Data
+
+// Forget a single key...
+$request->session()->forget('key');
+
+// Forget multiple keys...
+$request->session()->forget(['key1', 'key2']);
+
+// If you would like to remove all data from the session, you may use the flush method.
+$request->session()->flush();
+
+```
+
+> There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are testable via the `assertSessionHas` method which is available in all of your test cases.
+
+### Regenerating The Session ID
+
+Regenerating the session ID is often done in order to prevent malicious users from exploiting a session fixation attack on your application.
+
+Laravel automatically regenerates the session ID during authentication if you are using the built-in `LoginController`; however, if you need to manually regenerate the session ID, you may use the `regenerate` method.
+
+```php
+$request->session()->regenerate();
+```
+
+### Session Blocking
+
+> To utilize session blocking, your application must be using a cache driver that supports atomic locks. Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, and `database` drivers. In addition, you may not use the `cookie` session driver.
+
+By default, Laravel allows requests using the same session to execute concurrently.
+
+If you make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session.
+
+To mitigate this, Laravel provides functionality that allows you to limit concurrent requests for a given session.
+
+To get started, you may simply chain the `block` method onto your route definition.
+
+```php
+
+// In this example, an incoming request to the /profile endpoint would acquire a session lock. While this lock is being held, any incoming requests to the /profile or /order endpoints which share the same session ID will wait for the first request to finish executing before continuing their execution.
+
+// The first argument accepted by the block method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier.
+
+// The second argument accepted by the block method is the number of seconds a request should wait while attempting to obtain a session lock. A Illuminate\Contracts\Cache\LockTimoutException will be thrown if the request is unable to obtain a session lock within the given number of seconds.
+
+Route::post('/profile', function () {
+    //
+})->block($lockSeconds = 10, $waitSeconds = 10)
+
+Route::post('/order', function () {
+    //
+})->block($lockSeconds = 10, $waitSeconds = 10)
+
+// If neither of these arguments are passed, the lock will be obtained for a maximum of 10 seconds and requests will wait a maximum of 10 seconds while attempting to obtain a lock.
+
+Route::post('/profile', function () {
+    //
+})->block()
+
+```
+
+
 ## Validation
+
+Laravel provides several different approaches to validate your application's incoming data. By default, Laravel's base controller class uses a `ValidatesRequests` trait which provides a convenient method to validate incoming HTTP requests with a variety of powerful validation rules.
+
+To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object.
+
+> If validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user. In the case of a traditional HTTP request, a redirect response will be generated, while a JSON response will be sent for AJAX requests.
+> In addition, all of the validation errors will automatically be flashed to the session.
+
+Many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
+
+Example:
+
+```php
+
+$validatedData = $request->validate([
+    'title' => 'required|unique:posts|max:255',
+    'body' => 'required',
+]);
+
+// Alternatively, validation rules may be specified as arrays of rules instead of a single | delimited string.
+$validatedData = $request->validate([
+    'title' => ['required', 'unique:posts', 'max:255'],
+    'body' => ['required'],
+]);
+
+// You may use the validateWithBag method to validate a request and store any error messages within a named error bag.
+$validatedData = $request->validateWithBag('post', [
+    'title' => ['required', 'unique:posts', 'max:255'],
+    'body' => ['required'],
+]);
+
+// Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the bail rule to the attribute.
+$request->validate([
+    'title' => 'bail|required|unique:posts|max:255',
+    'body' => 'required',
+]);
+
+// If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax.
+$request->validate([
+    'title' => 'required|unique:posts|max:255',
+    'author.name' => 'required',
+    'author.description' => 'required',
+]);
+
+// By default, Laravel includes the TrimStrings and ConvertEmptyStringsToNull middleware in your application's global middleware stack. These middleware are listed in the stack by the App\Http\Kernel class.
+// Because of this, you will often need to mark your "optional" request fields as nullable if you do not want the validator to consider null values as invalid.
+$request->validate([
+    'title' => 'required|unique:posts|max:255',
+    'body' => 'required',
+    'publish_at' => 'nullable|date',
+]);
+
+```
+
+### Displaying The Validation Errors
+
+> The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. When this middleware is applied an `$errors` variable will always be available in your views, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
+
+```html
+<!-- /resources/views/post/create.blade.php -->
+
+<h1>Create Post</h1>
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<!-- Create Post Form -->
+```
+
+> You may also use the `@error` Blade directive to quickly check if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message.
+
+```html
+<!-- /resources/views/post/create.blade.php -->
+
+<label for="title">Post Title</label>
+
+<input id="title" type="text" class="@error('title') is-invalid @enderror">
+
+@error('title')
+    <div class="alert alert-danger">{{ $message }}</div>
+@enderror
+```
+
+### Form Request Validation
+
+For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command.
+
+```bash
+php artisan make:request StoreBlogPost
+```
+
+> The generated class will be placed in the `app/Http/Requests` directory.
+
+```php
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+    return [
+        'title' => 'required|unique:posts|max:255',
+        'body' => 'required',
+    ];
+}
+```
+
+> All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic.
+
+```php
+/**
+ * Store the incoming blog post.
+ *
+ * @param  StoreBlogPost  $request
+ * @return Response
+ */
+public function store(StoreBlogPost $request)
+{
+    // The incoming request is valid...
+
+    // Retrieve the validated input data...
+    $validated = $request->validated();
+}
+```
+
+> Through Form Request Validation you can: Creating Form Requests, Authorizing Form Requests, Customizing The Error Messages, Customizing The Validation Attributes and Prepare Input For Validation (sanitize data).
+
+
 ## Error Handling
 ## Logging
