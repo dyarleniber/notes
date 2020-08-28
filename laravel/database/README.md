@@ -1,4 +1,0 @@
-[Back](../README.md)
-
-# Database
-
