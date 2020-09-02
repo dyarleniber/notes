@@ -168,7 +168,7 @@ Objetivo de marketing	| Formato/Abordagem de lances
 Reconhecimento 			| TrueView para alcance (CPM)
 Consideração 			| TrueView in-stream (CPV e Maximizar aumento)
 Consideração            | TrueView discovery (CPV)
-Ação 					| TrueView for action
+Ação 					| TrueView for action (CPA)
 
 > Tanto os bumpers quanto o TrueView para alcance são cobrados pelo CPM de impressão.
 
@@ -283,6 +283,47 @@ Promover ações do site ou geração de leads usando conversões com base nos L
 
 ## 4. Incentive o reconhecimento com mastheads e anúncios in-stream não puláveis
 
+> Com o masthead, é possível conseguir um alcance maciço, em um curto período de tempo, geralmente em um evento grande ou de lançamento de produto.
+> Os anúncios in-stream não puláveis estão disponíveis em leilão e por reserva e oferecem a possibilidade de compartilhar a mensagem completa com o público.
+
+Neste módulo, você aprenderá sobre esses formatos e como eles são especialmente relevantes para anunciantes com metas de alcance e reconhecimentos elevadas e histórico de grande investimento em TV.
+
+### Reconhecimento: masthead (CPD ou CPM)
+
+O masthead é exibido no feed e na página inicial do YouTube, um anúncio de letreiro.
+
+![Masthead](https://skillshop.exceedlms.com/uploads/resource_courses/targets/75777/original/course/en/assets/5c740d35b6c53d2c6e6f1491/large.png)
+
+- **CPD**(Custo por dia): nos dias que mais interessam aos anunciantes, eles podem alcançar o imenso público do YouTube de maneira maciça, em um único dia, tanto em computadores quanto em dispositivos móveis.
+- **CPM** (Custo por mil impressões): os anunciantes também podem comprar o slot de masthead no feed da página inicial com base em CPM, o que permite o uso do Audience Solutions. É a mesma unidade de criativo, mas os anunciantes podem reservar esse espaço premium para o público que mais importa.
+
+Um masthead é eficaz para anunciantes interessados em:
+
+- **Gerar reconhecimento** para o lançamento de um novo produto ou serviço.
+- **Concentrar-se em high canais de alto impacto** para maior visibilidade.
+- **Alcançar** um público enorme, em um curto período de tempo, geralmente em um grande evento.
+
+### Reconhecimento: anúncios in-stream não puláveis (CPM)
+
+**Os anúncios in-stream não puláveis geram reconhecimento** e alcançam seu público-alvo.
+
+![In-stream NP](https://skillshop.exceedlms.com/uploads/resource_courses/targets/75777/original/course/en/assets/5ca3b840741b505195b38c32/large.png)
+
+- Disponíveis em leilão ou como uma compra por reserva
+- Anúncio em vídeo padrão do setor, com 15 segundos ou menos e não pulável (20 segundos ou menos disponível em determinados mercados)
+- Mais semelhantes aos anúncios de TV
+- Disponíveis no YouTube e no Google parceiros de vídeo (Google Ads e Display & Video 360)
+
+Quais são as diferenças entre anúncios in-stream não puláveis por reserva e por leilão?
+
+Uma compra por leilão tem CPMs mais baixos, recursos de público avançados e uma campanha autogerenciada mais flexível no Google Ads ou Display & Video 360. O anúncio também pode ser exibido no YouTube e no Google parceiros de vídeo.
+
+A reserva oferece impressões garantidas, mas tem CPMs mais altos e opções de público mais limitadas.
+
+> Descobrimos que, no YouTube, os anúncios de 30 segundos não puláveis são os que os espectadores menos gostam. Quando os espectadores são forçados a assistir anúncios mais longos, eles tendem a ficar contrariados e isso pode prejudicar as marcas. Anúncios mais longos ainda podem funcionar, mas os anunciantes precisam ganhar a atenção do espectador. Assim, com foco nos formatos mais fáceis de usar, decidimos desativar a reserva padrão de anúncios de 30 segundos não puláveis em 2017.
+
+> O TrueView para alcance pode ser a melhor alternativa por oferecer um CPM relativamente baixo e proporcionar o alcance pretendido, sem exigir uma substancial reedição criativa.
+
 
 
 
@@ -291,3 +332,46 @@ Promover ações do site ou geração de leads usando conversões com base nos L
 
 
 ## 5. Ofereça um alcance adicional, além do YouTube, com o Google parceiros de vídeo
+
+> O Google parceiros de vídeo (GVP, na sigla em inglês) é um conjunto de sites e aplicativos dos nossos editores parceiros.
+> O GVP é o complemento perfeito para o YouTube e ajuda as marcas a alcançar clientes em potencial quando eles interagem com conteúdo fora do YouTube.
+> Os anúncios em vídeo out-stream são exibidos fora do stream de vídeo, como em artigos de notícias ou antes dos jogos para dispositivos móveis, para aumentar o alcance adicional por um preço mais econômico, por meio do GVP.
+
+Mais de dois bilhões de usuários ativos mensais acessam o YouTube para assistir vídeos. Mas o YouTube não é o único lugar já que isso também pode ser feito na Web, em jogos e em apps. Para ajudar você a encontrar mais clientes em potencial no momento em que interagem com os conteúdos fora do YouTube, oferecemos o Google parceiros de vídeo (GVP na sigla em inglês).
+
+O Google estabeleceu parcerias com editores líderes por meio do Google Ad Manager, da AdMob e do AdSense, que ampliam o alcance do vídeo além do YouTube.
+
+Os formatos de vídeo comprados no Google Ads e no Display & Video 360 (DV360), exibidos no YouTube, também estão disponíveis no GVP:
+
+- TrueView in-stream
+- TrueView para alcance
+- TrueView for Action (Beta)
+- Bumpers
+- Anúncios in-stream não puláveis (Google Ads e DV360)
+
+> O GVP prioriza o uso de dispositivos móveis, com mais de 75% do inventário em dispositivos móveis. 
+
+Principais benefícios do Google parceiros de vídeos:
+
+- **Tenha mais eficiência**: Adicionar o GVP na parte superior do YouTube aumenta em mais de 50% o alcance para o mesmo orçamento.
+- **Anúncios em vídeo no GVP geram aumento semelhante aos anúncios em vídeo no YouTube**: Nós realizamos 41 estudos idênticos de Brand Lift de recall do anúncio para avaliar o impacto dos anúncios TrueView.
+- **Audience Solutions**: Temos os maiores segmentos de público no YouTube e no GVP para extensão contínua.
+- **Controles da marca**: As configurações de controle da marca são as mesmas para que você tenha mais controle sobre onde os anúncios podem ser exibidos, o que inclui tipos de inventário e exclusão de conteúdo.
+
+> Os usuários geralmente assistem conteúdo com o som desligado e podem preferir não receber um anúncio que inicie com áudio. Para esses momentos, temos um formato que coloca os usuários no controle da experiência de publicidade.
+
+### Reconhecimento: anúncios out-stream (vCPM)
+
+Os anúncios em vídeo out-stream são exibidos fora de um stream de vídeo e são a maneira econômica de usar seus atuais anúncios em vídeo para aumentar o alcance nos sites para dispositivos móveis e apps. Esses anúncios estão disponíveis apenas no GVP.
+
+O out-stream pode ajudar os anunciantes a:
+
+- Alcançar pessoas em mais momentos ao longo do dia
+- Criar anúncios para a função deslizar e rolar dos dispositivos móveis
+- Pagar somente pelos anúncios visualizados, usando a definição de visibilidade de vídeo do MRC.
+
+> Os anunciantes são cobrados no padrão de CPM de vídeo visível do Media Rating Council (MRC). É preciso que mais de 50% do anúncio seja visualizado pelo menos durante dois segundos do início do vídeo.
+
+A configuração de campanha é muito simples para out-stream. Executamos um único recurso de vídeo em sites e apps para dispositivos móveis. Veja alguns exemplos de vídeo no modo retrato, vídeo no modo paisagem, banner maior em Web para dispositivos móveis e vídeo in-feed para app de dispositivos móveis (da esquerda para a direita).
+
+![out-stream](https://skillshop.exceedlms.com/uploads/resource_courses/targets/75777/original/course/en/assets/5c66676ae53d2e65c6b27082/original.gif)
