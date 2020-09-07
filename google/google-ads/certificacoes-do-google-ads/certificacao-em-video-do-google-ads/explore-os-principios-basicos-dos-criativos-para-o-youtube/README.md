@@ -458,6 +458,72 @@ Use enquadramento fechado, ritmo mais rápido, textos grandes, brilho e contrast
 
 ## 4. Conte uma história em seis segundos
 
+> Algumas práticas recomendadas fundamentais para a criação de anúncios bumper são diferentes daquelas usadas para produzir anúncios tradicionais. Observe as práticas recomendadas listadas abaixo para maximizar o impacto dos seus anúncios bumper.
+
+Neste módulo você aprenderá sobre os benefícios dos anúncios bumper e como eles podem melhorar o desempenho da sua campanha. Você também vai descobrir as práticas recomendadas para desenvolver anúncios eficazes no YouTube, além de receber quatro dicas para produzir incríveis anúncios bumper.
+
+Anúncios bumper de seis segundos desenvolvidos especificamente para o YouTube têm excelente potencial para criativos. Confira alguns dos benefícios comprovados.
+
+Benefícios dos anúncios bumper:
+
+- **Efetivo**
+
+Eles são efetivos por si só: nove em cada dez anúncios bumper geram um elevado recall do anúncio, com aumento médio de 38%.
+
+E são efetivos em conjunto: consumidores que assistem a três ou mais anúncios bumper apresentam um recall do anúncio 2,2 vezes maior do que aqueles que assistem a apenas um.
+
+- **Eficiente**
+
+Eles são eficientes: anúncios bumper de seis segundos no YouTube geraram o mesmo recall de anúncios que versões de 30 segundos em outro site.
+
+- **Alcança novas pessoas**
+
+Eles alcançam mais pessoas: anúncios de seis segundos aumentam em média 78% o alcance único de campanhas TrueView.
+
+Aqui estão três dicas:
+
+- **Concentre-se em um objetivo único e simples**
+
+Anúncios bumper são criados para dispositivos móveis, transmitindo mensagens rápidas das marcas para espectadores em qualquer lugar. Apenas com alguns poucos segundos disponíveis para transmitir uma mensagem, é preciso ter foco e clareza.
+
+Logo no início (literalmente), encontre um momento para determinar o foco.
+
+- **Estime o tempo para estabelecer o anúncio e finalizar com chave de ouro**
+
+No início do anúncio, os espectadores podem demorar um pouco para entender. Crie um contexto abrindo o anúncio com um visual marcante que leve o espectador imediatamente para o espaço da sua marca. Depois de encerrar o anúncio com chave de ouro, geralmente são necessários cerca de dois segundos para o espectador absorver a mensagem final ou a call-to-action.
+
+- **Os vídeos de 30 segundos não têm todas as respostas**
+
+Criar a partir do zero no YouTube dá a liberdade de ter uma folha em branco em todos os anúncios. Observe além do vídeo de 30 segundos que você já gravou. Qual filmagem ou conteúdo extra está disponível e pode ajudar você a ter um novo olhar sobre sua mensagem?
+
+Algumas marcas também tiveram bons resultados ao transformar recursos impressos em vídeos. Adicione recursos visuais simples ou um título marcante para transmitir a história da sua marca. 
+
+### Considerações para a eficiência do criativo
+
+Pense nesses aspectos quando criar bumpers para recall de anúncios e reconhecimento da marca. Essas recomendações são baseadas em pesquisas internas.
+
+#### Branding
+
+Anúncios que exibem o produto apresentam maiores índices de recall.
+
+#### Áudio
+
+Anúncios que são audíveis e visíveis registram resposta de marca mais forte do que aqueles que são apenas visíveis.
+
+#### Rompa as barreiras que separam você dos espectadores
+
+Anúncios com uma pessoa falando diretamente para a câmera têm índices mais altos de recall.
+
+#### Textos muito grandes e locuções
+
+É preciso atenção na forma como a comunicação acontece em um intervalo de tempo tão pequeno. Telas com textos muito grandes, legendas e outros recursos deste tipo resultam em níveis inferiores de reconhecimento da marca.  Estudos também associam locuções a níveis inferiores de reconhecimento da marca.
+
+### Dicas do setor
+
+Theodor Arhio, diretor global de Criação e Conteúdo da agência de publicidade TBWA\Worldwide, dá uma dica de especialista em relação aos anúncios de seis segundos.
+
+[Dicas do setor](https://www.youtube.com/watch?v=hD3LsJTP8b0)
+
 
 
 
