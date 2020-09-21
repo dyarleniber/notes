@@ -533,6 +533,35 @@ Theodor Arhio, diretor global de Criação e Conteúdo da agência de publicidad
 
 ## 5. A reinvenção da narrativa
 
+> Aprender novas maneiras de contar histórias pode ser muito útil para chamar atenção para seus anúncios no YouTube. Estas são estruturas eficazes:
+> - Provocar, amplificar, transmitir
+> - O tiro certeiro
+> - O acompanhamento
+
+Como contar histórias no YouTube
+
+A mesma história pode ser contada de formas diferentes. Apresentamos a seguir três sequências de mídia e esquemas de amplificação confiáveis que funcionam bem se usados com as telas de criação do YouTube. Estude-os, use a criatividade e conte a história certa para sua marca.
+
+### Provocar, amplificar, transmitir
+
+Provoque seu público com anúncios curtos, amplifique a mensagem com anúncios mais longos para maior alcance e impacto e transmita sua mensagem para incentivar ações.
+
+- [Provoque](https://www.youtube.com/watch?v=iZJNdv6kWZg)
+- [Amplifique](https://www.youtube.com/watch?v=chRQSCwS9Cw)
+- [Transmita](https://www.youtube.com/watch?v=hIsjIMbMGt0)
+
+### O tiro certeiro
+
+Atenha-se a um conceito, mas ajuste levemente o vídeo tendo como base o contexto específico do espectador. Seu espectador vai assistir a um programa com os melhores momentos de uma partida de futebol? Adicione algo ligado ao esporte.
+
+- [Exemplo](https://www.youtube.com/watch?v=8MY-gg3FOoE)
+
+### O acompanhamento
+
+Os espectadores recebem uma peça mais loga do criativo, seguida por anúncios mais curtos que servem para lembrar o público sobre aquilo que já assistiram.
+
+- [Exemplo](https://www.youtube.com/watch?v=hNAc7v4V_FY)
+
 
 
 
@@ -542,6 +571,44 @@ Theodor Arhio, diretor global de Criação e Conteúdo da agência de publicidad
 
 ## 6. Experimentos com criativos
 
+> Experimentos são formas rápidas e eficientes para maximizar anúncios de alto desempenho. Crie versões separadas do seu anúncio e faça um estudo de Brand Lift para testar sua hipótese.
+
+Você quer saber com que eficiência seu anúncio gera as métricas que interessam, como por exemplo recall do anúncio, reconhecimento da marca, consideração, aceitação, intenção de compra e interesse na marca? Então conheça o Brand Lift do Google. Essa ferramenta é muito útil para fazer um experimento na fase de preparação da campanha e para saber que tipo de vídeo tem melhor resultado com seu público.
+
+Você está debatendo com um colega sobre qual tipo de vídeo prende mais a atenção do usuário de dispositivos móveis: se um anúncio bumper que já apresenta a marca de imediato ou se um vídeo mais longo com um roteiro mais tradicional. Como você resolveria essa questão? Fazer experimentos com criativos usando o Brand Lift é a maneira mais efetiva de resolver esses dilemas.
+
+### O que é preciso
+
+1. Comece fazendo o rascunho de uma hipótese. Qual seria o impacto das variações no seu criativo ou nos elementos de produção? Como eles vão afetar a reação dos espectadores? Qual é o tempo ideal de duração dos vídeos para seu público?
+
+2. Envolva as pessoas certas. Trabalhe com sua equipe de mídia que tem acesso ao Google Ads.
+
+3. Depois de produzir os vídeos, converse com sua equipe de mídia para iniciar o estudo de Brand Lift no Google Ads.
+
+4. Em questão de dias, você verá o impacto de cada anúncio no reconhecimento da marca, na consideração e no recall. Você também saberá se os consumidores ficam mais dispostos a pesquisar sua marca no Google depois de assistir ao seu anúncio.
+
+5. Quando o estudo de Brand Lift estiver terminado, assimile as informações e interprete a reação do público. Como esses resultados vão influenciar sua direção de criação?
+
+### Fazendo experimentos com produção
+
+O Google organizou o projeto Unskippable Labs para determinar o que de fato torna um anúncio ser impossível de ser pulado. Foram testadas 16 versões de um anúncio genérico, em que foram alterados o ritmo, o enquadramento, os textos e a orientação. O objetivo era determinar qual dos formatos é o mais eficiente. Confira abaixo os resultados:
+
+#### Ritmo
+
+Seja rápido. Anúncios com ritmo mais rápido têm desempenho melhor em termos de visualizações, principalmente para públicos que usam dispositivos móveis. Faça experiências com seu anúncio para ver até que ponto você consegue acelerar os cortes até parar de observar ganhos.
+
+#### Enquadramento
+
+Usar enquadramento fechado (principalmente no início) e destacar rostos funciona bem para o público do YouTube.
+
+#### Textos
+
+Adicione texto às telas para destacar pontos importantes, dar ênfase, ou oferecer informações que aumentem o envolvimento.
+
+#### Orientação
+
+A orientação do criativo, vertical ou horizontal, não afeta o desempenho de forma significativa.
+
 
 
 
@@ -550,3 +617,76 @@ Theodor Arhio, diretor global de Criação e Conteúdo da agência de publicidad
 
 
 ## 7. Retenha e entretenha
+
+> Encontre insights importantes sobre quem, o que, onde e como para melhorar suas campanhas com o YouTube Analytics. Os relatórios de retenção de público e de tempo de exibição são especialmente úteis para entender como seus anúncios estão repercutindo com o público.
+
+O público não precisa mais assistir a um anúncio até o fim. Então, como você sabe se conseguiu atrair a atenção deles? O YouTube Analytics é um recurso valioso no kit de ferramentas para criativos. Aprofunde-se neste recurso para descobrir as respostas das questões básicas relacionadas ao seu público: quem, o que, onde, quando e como.
+
+Com o YouTube Analytics, você tem respostas sobre a eficácia dos seus anúncios sobre os espectadores. 
+
+- **Os usuários estão deixando de assistir até do final?**
+
+- **Que segmento de usuários está conectado ao seu conteúdo?**
+
+- **Quais vídeos estão sendo mais assistidos?**
+
+O YouTube Analytics contém informações importantes que ajudam a entender como os consumidores estão interagindo com o conteúdo ou se eles estão de fato assistindo aos vídeos. O YouTube Analytics gera insights a partir do momento em que o vídeo é enviado.
+
+- **Quem está assistindo ao conteúdo do seu cliente?**
+
+Responda três perguntas básicas com um clique:
+
+- Idade
+- Gênero
+- Região geográfica
+
+Os dados são detalhados nas transmissões dos intervalos de idade padrão e nos relatórios geográficos.
+
+- **O que as pessoas estão assistindo?**
+
+Visualizações em tempo real apresentam feedback imediato dos lançamentos das suas campanhas.
+
+Considerar o tempo de exibição (e não apenas as visualizações) é a melhor forma de medir seu sucesso. Essa métrica indica se você está produzindo um conteúdo de qualidade que se conecta com seu público.
+
+- **Onde as pessoas estão assistindo?**
+
+A origem do tráfego mostra onde os espectadores assistiram ao seu vídeo: se foi incorporado a um site da marca, compartilhado por redes sociais ou no YouTube.
+
+O dispositivo detalha as visualizações em diferentes tipos de dispositivos e sistemas operacionais durante intervalos de tempo determinados. 
+
+- **Qual é o grau de envolvimento dos espectadores? Em que momento eles estão indo embora?**
+
+A curva de retenção mostra, segundo a segundo, por quanto tempo os espectadores estão assistindo aos vídeos. O público está assistindo por tempo suficiente para ver sua marca ou call-to-action?
+
+### Relatórios fundamentais
+
+Esses relatórios fundamentais no YouTube Analytics ajudam você a responder "quem", "o que", "onde" e "como" em relação ao engajamento do seu público. Use-os para otimizar as campanhas atuais e para coletar insights para campanhas futuras.
+
+- **Quem: informações demográficas**
+
+Vamos começar com "quem". O relatório de informações demográficas mostra as principais informações relacionadas a idade e sexo. Você pode descobrir ali dados que revelam novos segmentos de público para campanhas futuras que podem ser segmentados com criativos personalizados.
+
+- **O que: tempo de exibição**
+
+Em seguida, "o quê". O que as pessoas estão assistindo? O relatório de tempo de exibição mostra o total agregado de quantos minutos as pessoas passam assistindo cada vídeo no decorrer do tempo.
+
+- **Onde: origens de tráfego**
+
+O relatório de origens de tráfego mostra onde os espectadores encontraram seu conteúdo. Por exemplo, é possível ver se os espectadores pesquisam diretamente no YouTube, clicam nas miniaturas de "Vídeos sugeridos" ou abrem links em redes sociais como Twitter ou Facebook.
+
+- **Onde: dispositivos**
+
+O relatório de dispositivos fornece informações sobre os diferentes tipos de dispositivos e sistemas operacionais usados para assistir a seus vídeos.
+
+- **Como: retenção de público**
+
+Agora vamos para o teste definitivo: as pessoas assistem seu vídeo até o final? Use o relatório de retenção de público para ter uma ideia geral do quanto seu vídeo reteve a atenção do público. Use o relatório para ver:
+
+- a duração média de todos os vídeos no canal da sua marca;
+- os vídeos ou canais mais assistidos, listados por tempo de exibição;
+- dados de retenção de público de um vídeo específico em diferentes períodos;
+- retenção de público relativa de um vídeo comparada com a média de vídeos similares do YouTube.
+
+### Resumo
+
+É possível criar uma conexão mais forte com os consumidores ao dominar criativos de forma eficiente no YouTube. Com este curso, você aprendeu a aproveitar os insights do Google, as práticas recomendadas do criativo e as estratégias narrativas para alcançar a excelência do criativo. Com as soluções de avaliação e de análise do Google, você continua a aprimorar o desempenho do seu criativo com mais insights sobre como sua mensagem está repercutindo no seu público.
