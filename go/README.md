@@ -70,6 +70,8 @@ import (
 var a int // variables declared without an explicit initial value are given their zero value
 var b, c bool
 
+// a = 2 // syntax error: non-declaration statement outside function body
+
 func main() {
 	var d, e int = 1, 2 // a var declaration can include initializers
 	var f, g = "f", "g" // if a initializer is present, the type can be omitted
@@ -81,6 +83,11 @@ func main() {
 	i, j, k := true, 1, "k"
 
 	fmt.Println(h, i, j, k)
+
+	// the short assignment statement must have at least one new variable, but it can be used to assign a new value to an existing variable
+	k, l := "k.", false
+
+	fmt.Println(k, l)
 }
 ```
 
@@ -93,7 +100,6 @@ import (
 	"fmt"
 )
 
-// unlike variables, constants do not need to be used
 const Pi = 3.14
 
 // numeric constants are high-precision values
@@ -143,5 +149,57 @@ func main() {
 	ui := uint(f)
 
 	fmt.Println(in, fl, ui)
+}
+```
+
+## Strings
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	x := "interpreted \n string \n\t literals \n" // interpreted string literals
+	y := `raw \n\t string \n literals`            // raw string literals
+
+	fmt.Println(x, y)
+
+	z := fmt.Sprint(x, y) // returns a new string
+
+	fmt.Print(z)
+}
+```
+
+## Custom types
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+type customtype int
+
+var x customtype = 100
+
+func main() {
+	y := 10
+
+	fmt.Printf("%T \n", x)
+	fmt.Printf("%T \n", y)
+	
+	// x = y // cannot use y (type int) as type customtype in assignment
+	// y = x // cannot use x (type customtype) as type int in assignment
+	
+	x = 10
+	x = customtype(y)
+	y = 100
+	y = int(x)
+	
+	fmt.Println(x, y)
 }
 ```
