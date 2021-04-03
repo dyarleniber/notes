@@ -51,3 +51,43 @@ func main() {
 - [Arrays](arrays/README.md)
 - [Slices](slices/README.md)
 - [range](range/README.md)
+
+
+
+mapas
+- nao sao ordenados
+- em um range, a ordem e aleatoria
+- lookup extremamente performatico
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+
+	amigos := map[string]int{
+		"alfredo": 5551234,
+		"joana":   9996674,
+	}
+
+	fmt.Println(amigos)
+	fmt.Println(amigos["joana"])
+
+	amigos["gopher"] = 444444
+
+	fmt.Println(amigos)
+	fmt.Println(amigos["gopher"], "\n\n")
+
+
+	// comma ok idiom
+	if será, ok := amigos["fantasma"]; !ok {
+		fmt.Println("não tem!")
+	} else {
+		fmt.Println(será)
+	}
+
+}
+```

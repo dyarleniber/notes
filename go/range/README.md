@@ -5,25 +5,13 @@
 ```golang
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
+
+var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
 
 func main() {
-	slice := []int{20, 21, 22, 23, 1, 13}
-
-	total := 0
-
-	for _, valor := range slice {
-		// mesma coisa que total = total + valor
-		total += valor
-	}
-
-	fmt.Println("O valor total é:", total)
-
-	// without range
-	for i := 0; i < len(sabores); i++ {
-		fmt.Println(sabores[i])
+	for i, v := range pow {
+		fmt.Printf("2**%d = %d\n", i, v)
 	}
 }
 ```

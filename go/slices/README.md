@@ -13,6 +13,9 @@ func main() {
 	// An array has a fixed size. A slice, on the other hand, is a dynamically-sized
 	// In practice, slices are much more common than arrays.
 
+	// []T
+	// a[low : high] - This selects a half-open range which includes the first element, but excludes the last one.
+
 	array := [5]int{1, 2, 3, 4, 5}
 	fmt.Println(array)
 
@@ -31,20 +34,74 @@ func main() {
 	fmt.Println(slice[3])
 
 
-	sabores := []string{"pepperoni", "mozzarela", "abacaxi", "quatroqueijos", "marg"}
+	flavors := []string{"Margherita", "Margherita", "BBQ", "Pineapple", "Hawaiian"}
 
 	// all elements
-	fatia := sabores[:]
-	fmt.Println(fatia)
+	s := flavors[:]
+	fmt.Println(s)
 
-	fatia = sabores[2:4]
-	fmt.Println(fatia)
+	s = flavors[2:4]
+	fmt.Println(s)
 
 
-	sabores = append(sabores[:2], sabores[4:]...)
-	fmt.Println(sabores)
+	flavors = append(flavors[:2], flavors[4:]...)
+	fmt.Println(flavors)
 }
 ```
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	// SLICES ARE LIKE REFERENCES TO ARRAYS (UNDERLYING ARRAYS)
+	// Changing the elements of a slice modifies the corresponding elements of its underlying array
+
+	names := [4]string{
+		"John",
+		"Paul",
+		"George",
+		"Ringo",
+	}
+	fmt.Println(names)
+
+	a := names[0:2]
+	b := names[1:3]
+	fmt.Println(a, b)
+
+	b[0] = "XXX"
+	fmt.Println(a, b)
+	fmt.Println(names)
+}
+```
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	firstslice := []int{1, 2, 3, 4, 5}
+
+	// [1 2 3 4 5]
+	fmt.Println(firstslice)
+
+	secondslice := append(firstslice[:2], firstslice[4:]...)
+
+	// [1 2 5]
+	fmt.Println(secondslice)
+
+	// [1 2 5 4 5]
+	fmt.Println(firstslice)
+}
+```
+
+### Slices of slices
 
 ```golang
 package main
@@ -63,26 +120,20 @@ func main() {
 }
 ```
 
+### Nil slices
+
 ```golang
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
-	primeiroslice := []int{1, 2, 3, 4, 5}
-
-	// [1 2 3 4 5]
-	fmt.Println(primeiroslice)
-
-	segundoslice := append(primeiroslice[:2], primeiroslice[4:]...)
-
-	// [1 2 5]
-	fmt.Println(segundoslice)
-
-	// [1 2 5 4 5]
-	fmt.Println(primeiroslice)
+	// The zero value of a slice is nil
+	var s []int
+	fmt.Println(s, len(s), cap(s))
+	if s == nil {
+		fmt.Println("nil!")
+	}
 }
 ```
 
@@ -96,7 +147,15 @@ import (
 )
 
 func main() {
-	slice := make([]int, 5, 10)
+	// The make function allocates a zeroed array and returns a slice that refers to that array:
+
+	// The length of a slice is the number of elements it contains
+
+	// The capacity of a slice is the number of elements in the underlying array
+
+	slice := make([]int, 5, 10) // len(b)=5, cap(b)=10
+
+	fmt.Println(slice) // [0 0 0 0 0]
 
 	slice[0], slice[1], slice[2], slice[3], slice[4] = 1, 2, 3, 4, 5
 
