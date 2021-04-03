@@ -9,7 +9,7 @@ No external libraries are needed to build this extension and it is available and
 SPL provides a set of standard datastructure, a set of iterators to traverse over objects, a set of interfaces, a set of standard Exceptions, a number of classes to work with files and it provides a set of functions like spl_autoload_register().
 
 
-
+https://www.php.net/manual/en/book.spl.php
 
 
 Datastructures
